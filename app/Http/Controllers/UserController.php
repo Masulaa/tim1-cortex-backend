@@ -11,8 +11,9 @@ class UserController extends Controller
 
     public function details(Request $request)
     {
-        return $request->user();
-
+        return response()->json([
+            'user' => $request->user()
+        ], 200);
 
     }
 
@@ -20,10 +21,10 @@ class UserController extends Controller
     {
         $fields = $request->validated();
         $user = $request->user()->update($fields);
-        return [
+        return response()->json([
             'message' => 'The user has successfully updated the profile',
             'user' => $fields
-        ];
+        ], 200);
 
     }
 }
