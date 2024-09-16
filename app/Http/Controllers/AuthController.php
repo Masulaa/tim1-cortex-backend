@@ -20,7 +20,8 @@ class AuthController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $token->plainTextToken
+            'token' => $token->plainTextToken,
+            'message' => 'The user has successfully created the profile',
         ], 201);
     }
     public function login(LoginRequest $request)
@@ -41,7 +42,8 @@ class AuthController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $token->plainTextToken
+            'token' => $token->plainTextToken,
+            'message' => 'The user has successfully logged in',
         ], 200);
 
     }
