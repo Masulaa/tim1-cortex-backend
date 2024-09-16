@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Car;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCarRequest extends FormRequest
+class CheckAvailabilityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'car_id' => 'required|exists:cars,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
         ];
     }
 }

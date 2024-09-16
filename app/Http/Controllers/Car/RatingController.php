@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Car;
 
+use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\Rating;
 use Illuminate\Http\Request;

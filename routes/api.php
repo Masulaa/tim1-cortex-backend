@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\RatingController;
-use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\{
+    Car\CarController,
+    Car\RatingController,
+    Car\ReservationController,
+    User\AuthController,
+    User\UserController,
+};
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CarController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

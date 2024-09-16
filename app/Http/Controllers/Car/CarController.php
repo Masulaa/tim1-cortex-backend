@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Car;
 
+use App\Http\Controllers\Controller;
 use App\Models\Car;
-use App\Http\Requests\StoreCarRequest;
-use App\Http\Requests\UpdateCarRequest;
+use App\Http\Requests\Car\{
+    CheckAvailabilityRequest,
+    StoreCarRequest,
+    UpdateCarRequest};
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -32,32 +35,18 @@ class CarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCarRequest $request)
     {
-        $fields = $request->validate([
-            'make' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'year' => 'required|integer|min:2000|max:' . (date('Y') + 1),
-            'transmission' => 'required|string|max:255',
-            'fuel_type' => 'required|string|max:255',
-            'doors' => 'required|integer|min:1|max:6',
-            'price_per_day' => 'required|numeric|min:0|max:999999.99',
-            'availability' => 'required|boolean',
-            'status' => 'required|string|in:available,in use,returned',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
+        $fields = $request->validated();
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('car_images', 'public');
             $fields['image'] = $imagePath;
         }
 
-
-
         $car = Car::create($fields);
 
-        return response()->json($car, 201);
+        return response()->json(['car' => $car], 201);
     }
 
     /**
@@ -73,13 +62,9 @@ class CarController extends Controller
         return response()->json(['car' => $car], 200);
     }
 
-    public function checkAvailability(Request $request)
+    public function checkAvailability(CheckAvailabilityRequest $request)
     {
-        $validated = $request->validate([
-            'car_id' => 'required|exists:cars,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-        ]);
+        $validated = $request->validated();
 
         $car = Car::find($request->car_id);
 
