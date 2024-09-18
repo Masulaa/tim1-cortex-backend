@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Car;
+namespace App\Http\Requests\Car\Reservation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CheckAvailabilityRequest extends FormRequest
+class StoreReservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,10 @@ class CheckAvailabilityRequest extends FormRequest
     {
         return [
             'car_id' => 'required|exists:cars,id',
+            'user_id' => 'required|exists:users,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
+            'total_price' => 'nullable|numeric|min:'
         ];
     }
 }

@@ -6,6 +6,9 @@ use App\Models\Car;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Requests\Car\Reservation\{
+    StoreReservationRequest,
+    UpdateReservationRequest};
 use App\Http\Controllers\Controller;
 
 class ReservationController extends Controller
@@ -15,19 +18,14 @@ class ReservationController extends Controller
     {
         $reservations = Reservation::where('user_id', $user_id)->get();
 
-        return response()->json($reservations, 200);
+        return response()->json(['reservations' => $reservations,
+        'message' => 'Successfully listed reservations',], 200);
     }
 
-    public function store(Request $request)
+    public function store(StoreReservationRequest $request)
     {
 
-        $validated = $request->validate([
-            'car_id' => 'required|exists:cars,id',
-            'user_id' => 'required|exists:users,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'total_price' => 'nullable|numeric|min:0'
-        ]);
+        $validated = $request->validated();
 
         $car = Car::find($validated['car_id']);
         $totalPrice = $this->calculateTotalPrice($car, $validated['start_date'], $validated['end_date']);
@@ -41,7 +39,7 @@ class ReservationController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateReservationRequest $request, $id)
     {
         $reservation = Reservation::find($id);
 
@@ -49,10 +47,7 @@ class ReservationController extends Controller
             return response()->json(['message' => 'Reservation not found'], 404);
         }
 
-        $validated = $request->validate([
-            'start_date' => 'date',
-            'end_date' => 'date|after:start_date',
-        ]);
+        $validated = $request->validated();
 
         $reservation->update($validated);
 

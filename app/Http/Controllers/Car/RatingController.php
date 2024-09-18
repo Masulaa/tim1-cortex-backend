@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Car;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\Rating;
+use App\Http\Requests\Car\Rating\{
+    StoreRatingRequest,
+};
 use Illuminate\Http\Request;
 
 class RatingController extends Controller
@@ -14,15 +17,13 @@ class RatingController extends Controller
     {
         $ratings = Rating::where('car_id', $id)->get();
 
-        return response()->json($ratings, 200);
+        return response()->json(['ratings' => $ratings,
+        'message' => 'Successfully listed ratings',], 200);
     }
 
-    public function store(Request $request, $id)
+    public function store(StoreRatingRequest $request, $id)
     {
-        $validated = $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'string|nullable',
-        ]);
+        $validated = $request->validated();
 
         $car = Car::find($id);
         if (!$car) {

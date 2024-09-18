@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Car;
 
 use App\Http\Controllers\Controller;
 use App\Models\Car;
-use App\Http\Requests\Car\{
+use App\Http\Requests\Car\Car\{
     CheckAvailabilityRequest,
     StoreCarRequest,
     UpdateCarRequest};
@@ -21,7 +21,8 @@ class CarController extends Controller
         $cars = Car::all();
         // $cars = Car::where('availability', true)->get();
 
-        return response()->json(['cars' => $cars], 200);
+        return response()->json(['cars' => $cars,
+        'message' => 'Successfully listed cars',], 200);
     }
 
     /**
@@ -46,7 +47,8 @@ class CarController extends Controller
 
         $car = Car::create($fields);
 
-        return response()->json(['car' => $car], 201);
+        return response()->json(['car' => $car,
+        'message' => 'Successfully stored the car',], 201);
     }
 
     /**
@@ -59,7 +61,8 @@ class CarController extends Controller
             return response()->json(['message' => 'Car not found'], 404);
         }
 
-        return response()->json(['car' => $car], 200);
+        return response()->json(['car' => $car,
+        'message' => 'Successfully listed the car',], 200);
     }
 
     public function checkAvailability(CheckAvailabilityRequest $request)

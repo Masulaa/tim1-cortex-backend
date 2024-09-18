@@ -13,7 +13,8 @@ class UserController extends Controller
     public function details(Request $request)
     {
         return response()->json([
-            'user' => $request->user()
+            'user' => $request->user(),
+            'message' => 'Successfully listed the profile',
         ], 200);
 
     }
