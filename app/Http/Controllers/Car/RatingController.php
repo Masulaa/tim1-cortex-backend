@@ -8,6 +8,7 @@ use App\Models\Rating;
 use App\Http\Requests\Car\Rating\{
     StoreRatingRequest,
 };
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 class RatingController extends Controller
@@ -15,7 +16,7 @@ class RatingController extends Controller
 
     public function index($id)
     {
-        $ratings = Rating::where('car_id', $id)->get();
+        $ratings = Rating::where('reservation_id', $id)->get();
 
         return response()->json(['ratings' => $ratings,
         'message' => 'Successfully listed ratings',], 200);
@@ -23,15 +24,16 @@ class RatingController extends Controller
 
     public function store(StoreRatingRequest $request, $id)
     {
-        $validated = $request->validated();
+        $request->validated();
 
-        $car = Car::find($id);
-        if (!$car) {
-            return response()->json(['message' => 'Car not found'], 404);
+        $reservation = Reservation::find($id);
+        if (!$reservation) {
+            return response()->json(['message' => 'Reservation not found'], 404);
         }
 
-        $car->ratings()->create([
+        $reservation->ratings()->create([
             'user_id' => $request->user()->id,
+            'reservation_id' => $reservation->id,
             'rating' => $request->rating,
             'comment' => $request->comment,
         ]);

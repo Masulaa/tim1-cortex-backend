@@ -11,14 +11,14 @@ class Rating extends Model
 
     protected $fillable = [
         'user_id',
-        'car_id',
+        'reservation_id',
         'rating',
         'comment'
     ];
 
-    public function car()
+    public function reservation()
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Reservation::class);
     }
 
     public function user()

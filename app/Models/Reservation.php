@@ -26,4 +26,8 @@ class Reservation extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function ratings(){
+        return $this->belongsTo(Rating::class);
+    }
 }

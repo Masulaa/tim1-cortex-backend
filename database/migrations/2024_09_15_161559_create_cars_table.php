@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->integer('doors');
             $table->decimal('price_per_day', 8, 2);
             $table->boolean('availability')->default(true)->index();
-            $table->string('status')->default('available'); // Status (available, in use, returned)
+            $table->string('status')->default('available'); // Status (available, in use)
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
