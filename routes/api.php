@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/reservations/{id}', [ReservationController::class, 'update']);
 
     Route::get('/reservations/{id}/ratings', [RatingController::class, 'index']);
-    Route::post('/reservations/{reservationId}/rate/{carId}', [RatingController::class, 'store']);
+    Route::post('/reservations/{reservationIrd}/rate/{carId}', [RatingController::class, 'store']);
 
 });
 
