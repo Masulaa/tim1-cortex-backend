@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])
     ->middleware('auth', IsAdmin::class)->name('admin.dashboard');
