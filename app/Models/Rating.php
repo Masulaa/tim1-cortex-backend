@@ -12,6 +12,7 @@ class Rating extends Model
     protected $fillable = [
         'user_id',
         'reservation_id',
+        'car_id',
         'rating',
         'comment'
     ];
@@ -19,6 +20,11 @@ class Rating extends Model
     public function reservation()
     {
         return $this->belongsTo(Reservation::class);
+    }
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
     }
 
     public function user()
