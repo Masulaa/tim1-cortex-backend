@@ -32,7 +32,7 @@ class AdminCarStoreRequest extends FormRequest
             'availability' => 'required|boolean',
             'status' => 'required|string|max:50',
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ];
     }
 }

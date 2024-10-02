@@ -49,10 +49,10 @@ class AdminCarsController extends Controller
         $car = new Car($request->all());
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/cars-images');
-            $car->image = str_replace('public/cars-images/', '', $path);
+            $path = $request->file('image')->store('cars-images', 'public');
+            $filename = basename($path);
+            $car->image = $filename;
         }
-
         $car->save();
 
         return redirect()->route('admin.cars.index')->with('success', 'Car created successfully');
