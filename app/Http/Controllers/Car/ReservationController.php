@@ -8,7 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\Car\Reservation\{
     StoreReservationRequest,
-    UpdateReservationRequest};
+    UpdateReservationRequest
+};
 use App\Http\Controllers\Controller;
 
 class ReservationController extends Controller
@@ -18,25 +19,57 @@ class ReservationController extends Controller
     {
         $reservations = Reservation::where('user_id', $user_id)->get();
 
-        return response()->json(['reservations' => $reservations,
-        'message' => 'Successfully listed reservations',], 200);
+        return response()->json([
+            'reservations' => $reservations,
+            'message' => 'Successfully listed reservations',
+        ], 200);
     }
 
     public function store(StoreReservationRequest $request)
     {
-
         $validated = $request->validated();
 
+
+        $reservationStart = Carbon::parse($validated['start_date']);
+        $now = Carbon::now();
+
+        $minReservationTime = $now->copy()->addHours(24);
+
+        if ($reservationStart->isBefore($minReservationTime)) {
+            return response()->json(['message' => 'You must reserve at least 24 hours in advance'], 400);
+        }
+
+        $existingReservation = Reservation::where('user_id', $validated['user_id'])
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('start_date', [$validated['start_date'], $validated['end_date']])
+                    ->orWhereBetween('end_date', [$validated['start_date'], $validated['end_date']]);
+            })
+            ->first();
+
+        if ($existingReservation) {
+            return response()->json(['message' => 'You already have a reservation in this period'], 400);
+        }
+
         $car = Car::find($validated['car_id']);
+        $isCarAvailable = !$car->reservations()
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('start_date', [$validated['start_date'], $validated['end_date']])
+                    ->orWhereBetween('end_date', [$validated['start_date'], $validated['end_date']]);
+            })
+            ->exists();
+
+        if (!$isCarAvailable) {
+            return response()->json(['message' => 'The car is not available in the selected period'], 400);
+        }
+
         $totalPrice = $this->calculateTotalPrice($car, $validated['start_date'], $validated['end_date']);
 
         $reservation = Reservation::create(array_merge($validated, [
             'total_price' => $totalPrice,
-            'status' => $request->status ?? 'pending',
+            'status' => 'pending',
         ]));
+
         return response()->json(['message' => 'Reservation created successfully', 'reservation' => $reservation], 201);
-
-
     }
 
     public function update(UpdateReservationRequest $request, $id)
