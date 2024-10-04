@@ -36,10 +36,13 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->is_admin ? 'yes' : 'no' }}</td>
                             <td>{{ $user->created_at }}</td>
-                            <td>
-                                <form action="{{ route('admin.users.edit', $user->id) }}" method="GET">
+                            <td> <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this user?');"
+                                    style="display:inline;">
                                     @csrf
-                                    <button type="submit" class="btn btn-info btn-lg">Change User</button>
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>
                         </tr>

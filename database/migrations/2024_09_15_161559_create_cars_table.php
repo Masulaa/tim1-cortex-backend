@@ -13,14 +13,13 @@ return new class extends Migration {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('make')->index();
-            $table->string('model');
+            $table->string('model')->index();
             $table->integer('year');
             $table->string('transmission');
             $table->string('fuel_type');
             $table->integer('doors');
-            $table->decimal('price_per_day', 8, 2);
-            $table->boolean('availability')->default(true)->index();
-            $table->string('status')->default('available'); // Status (available, in use)
+            $table->integer('price_per_day');
+            $table->string('status')->default('available'); // Status (available,under maintenance, out of order)
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();

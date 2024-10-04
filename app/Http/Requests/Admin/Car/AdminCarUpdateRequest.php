@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Car;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,17 +22,17 @@ class AdminCarUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'make' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'year' => 'required|integer|min:1886|max:' . date('Y'),
-            'transmission' => 'required|string|max:50',
-            'fuel_type' => 'required|string|max:50',
-            'doors' => 'required|integer|min:1|max:5',
-            'price_per_day' => 'required|numeric|min:0',
-            'availability' => 'required|boolean',
-            'status' => 'required|string|max:50',
+            'make' => 'nullable|string|max:255',
+            'model' => 'nullable|string|max:255',
+            'year' => 'nullable|integer|min:1886|max:' . date('Y'),
+            'transmission' => 'nullable|string|max:50',
+            'fuel_type' => 'nullable|string|max:50',
+            'doors' => 'nullable|integer|min:1|max:5',
+            'price_per_day' => 'nullable|numeric|min:0',
+            'availability' => 'nullable|boolean',
+            'status' => 'nullable|string|max:50',
             'description' => 'nullable|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:webp,jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

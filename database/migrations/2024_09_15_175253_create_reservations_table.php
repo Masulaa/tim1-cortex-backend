@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->date('start_date');
             $table->date('end_date');
             $table->decimal('total_price', 8, 2)->default(0.00);
-            $table->string('status')->default('pending');
+            $table->string('status')->default('pending'); // pending, reserved, in use, returned
             $table->timestamps();
         });
     }
