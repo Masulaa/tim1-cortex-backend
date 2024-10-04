@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Car;
 
 use App\Http\Requests\Admin\{
     AdminCarStoreRequest,
@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Storage;
 
-class AdminCarsController extends Controller
+class AdminCarController extends Controller
 {
 
     /**
@@ -25,7 +25,7 @@ class AdminCarsController extends Controller
 
         $cars = Car::all();
 
-        return view('admin.cars.list', compact('cars'));
+        return view('admin.cars.car_list', compact('cars'));
     }
     /**
      * Show the form for creating a new car.
@@ -70,7 +70,7 @@ class AdminCarsController extends Controller
 
         $car = Car::findOrFail($id);
 
-        return view('admin.cars-show', compact('car')); // Kreiraj ovu Blade stranicu
+        return view('admin.cars-show', compact('car'));
     }
 
     /**
@@ -82,7 +82,7 @@ class AdminCarsController extends Controller
     public function edit($id)
     {
         $car = Car::findOrFail($id);
-        return view('admin.cars.edit', compact('car')); // Kreiraj ovu Blade stranicu
+        return view('admin.cars.car_edit', compact('car'));
     }
 
 
