@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Car;
 
+use App\Mail\ReservationPendingMail;
 use App\Models\Car;
 use App\Models\Reservation;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\Car\Reservation\{
@@ -11,6 +13,7 @@ use App\Http\Requests\Car\Reservation\{
     UpdateReservationRequest
 };
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -91,6 +94,10 @@ class ReservationController extends Controller
             'total_price' => $totalPrice,
             'status' => 'pending',
         ]));
+
+        $user = User::find($request->user_id);
+
+        Mail::to($user->email)->send(new ReservationPendingMail($reservation, $user));
 
         return response()->json(['message' => 'Reservation created successfully', 'reservation' => $reservation], 201);
     }
