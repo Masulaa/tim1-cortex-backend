@@ -15,6 +15,29 @@ use App\Http\Controllers\Controller;
 class ReservationController extends Controller
 {
 
+    public function reservedDates($car_id)
+    {
+
+        $reservations = Reservation::where('car_id', $car_id)
+            ->whereIn('status', ['pending', 'reserved', 'in use'])
+            ->get(['start_date', 'end_date']);
+
+
+        $reservedDates = [];
+        foreach ($reservations as $reservation) {
+            $period = Carbon::parse($reservation->start_date)
+                ->toPeriod($reservation->end_date);
+            foreach ($period as $date) {
+                $reservedDates[] = $date->format('Y-m-d');
+            }
+        }
+
+        return response()->json([
+            'reserved_dates' => $reservedDates,
+            'message' => 'Successfully listed reserved dates',
+        ], 200);
+    }
+
     public function userReservations($user_id)
     {
         $reservations = Reservation::where('user_id', $user_id)->get();
