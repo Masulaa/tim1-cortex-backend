@@ -12,12 +12,18 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <!-- Search Bar -->
+    <div class="form-group">
+        <input type="text" id="search" class="form-control mb-3" placeholder="Search for users..." />
+    </div>
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Users</h3>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="users-table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -36,7 +42,8 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->is_admin ? 'yes' : 'no' }}</td>
                             <td>{{ $user->created_at }}</td>
-                            <td> <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <td>
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this user?');"
                                     style="display:inline;">
@@ -51,6 +58,7 @@
             </table>
         </div>
     </div>
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Create New User</h3>
@@ -74,4 +82,22 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script>
+        document.getElementById('search').addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#users-table tbody tr');
+            rows.forEach(row => {
+                const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                if (name.includes(searchValue) || email.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 @endsection
