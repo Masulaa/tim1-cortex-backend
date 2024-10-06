@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\{
     Car\AdminCarStatusController,
     User\AdminUserController,
     User\AdminSetterController,
+    User\AdminUserBlockController
 };
 
 Route::get('/', function () {
@@ -41,6 +42,9 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
         'update' => 'admin.users.update',
         'destroy' => 'admin.users.destroy',
     ]);
+
+    Route::post('/admin/users/{id}/block', [AdminUserBlockController::class, 'block'])->name('admin.users.block');
+    Route::post('/admin/users/{id}/unblock', [AdminUserBlockController::class, 'unblock'])->name('admin.users.unblock');
 
 
     Route::post('users/{id}/set-admin', [AdminSetterController::class, 'setAdmin'])->name('admin.users.setadmin');

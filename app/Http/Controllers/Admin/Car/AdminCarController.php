@@ -26,7 +26,7 @@ class AdminCarController extends Controller
     public function create(Request $request)
     {
 
-        return view('admin.cars-create'); // Kreiraj ovu Blade stranicu
+        return view('');
     }
 
     public function store(AdminCarStoreRequest $request)

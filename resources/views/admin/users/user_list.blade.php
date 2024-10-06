@@ -43,6 +43,8 @@
                             <td>{{ $user->is_admin ? 'yes' : 'no' }}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>
+                                <a href="{{ route('admin.users.show', $user->id) }}"
+                                    class="btn btn-primary btn-sm">Details</a>
                                 <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this user?');"
@@ -50,7 +52,21 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+
                                 </form>
+                                @if ($user->is_blocked)
+                                    <form action="{{ route('admin.users.unblock', $user->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning btn-sm">Unblock</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('admin.users.block', $user->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-sm">Block</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

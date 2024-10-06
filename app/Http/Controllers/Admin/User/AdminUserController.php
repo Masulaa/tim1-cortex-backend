@@ -30,6 +30,15 @@ class AdminUserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
     }
 
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+
+        $reservations = $user->reservations()->with('car')->orderBy('start_date', 'desc')->get();
+
+        return view('admin.users.details', compact('user', 'reservations'));
+    }
+
     public function store(AdminUserStoreRequest $request)
     {
 
