@@ -45,6 +45,8 @@
                             <td>${{ $car->price_per_day }}</td>
                             <td>{{ $car->status }}</td>
                             <td>
+                                <a href="{{ route('admin.cars.rental-history', $car->id) }}"
+                                    class="btn btn-info btn-sm">Rental History</a>
                                 <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                 <form action="{{ route('admin.cars.destroy', $car->id) }}" method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this car?');"

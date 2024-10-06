@@ -91,5 +91,12 @@ class AdminCarController extends Controller
         return redirect()->route('admin.cars.index')->with('success', 'Car deleted successfully');
     }
 
+    public function rentalHistory($id)
+    {
+        $car = Car::with('reservations.user')->findOrFail($id);
+
+        return view('admin.cars.rental_history', compact('car'));
+    }
+
 
 }

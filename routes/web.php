@@ -8,7 +8,8 @@ use App\Http\Controllers\Admin\{
     Car\AdminCarStatusController,
     User\AdminUserController,
     User\AdminSetterController,
-    User\AdminUserBlockController
+    User\AdminUserBlockController,
+    Car\AdminReservationController
 };
 
 Route::get('/', function () {
@@ -22,6 +23,7 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
 
     Route::get('/admin/cars/status', [AdminCarStatusController::class, 'carStatus'])->name('admin.cars.status');
     Route::put('/admin/cars/{id}/status', [AdminCarStatusController::class, 'updateStatus'])->name('admin.cars.updateStatus');
+    Route::get('admin/cars/{id}/rental-history', [AdminCarController::class, 'rentalHistory'])->name('admin.cars.rental-history');
 
     Route::resource('/admin/cars', AdminCarController::class)->names([
         'index' => 'admin.cars.index',
@@ -46,9 +48,21 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::post('/admin/users/{id}/block', [AdminUserBlockController::class, 'block'])->name('admin.users.block');
     Route::post('/admin/users/{id}/unblock', [AdminUserBlockController::class, 'unblock'])->name('admin.users.unblock');
 
-
     Route::post('users/{id}/set-admin', [AdminSetterController::class, 'setAdmin'])->name('admin.users.setadmin');
     Route::post('users/{id}/remove-admin', [AdminSetterController::class, 'removeAdmin'])->name('admin.users.removeadmin');
+
+    Route::resource('admin/reservations', AdminReservationController::class)->names([
+        'index' => 'admin.reservations.index',
+        'create' => 'admin.reservations.create',
+        'store' => 'admin.reservations.store',
+        'show' => 'admin.reservations.show',
+        'edit' => 'admin.reservations.edit',
+        'update' => 'admin.reservations.update',
+        'destroy' => 'admin.reservations.destroy',
+    ]);
+
+    Route::get('admin/reservations/{id}/invoice', [AdminReservationController::class, 'generateInvoice'])->name('admin.reservations.invoice');
+
 });
 
 //     Route::get('/admin', [AdminController::class, 'index'])

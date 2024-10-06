@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'admin',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'password_reset_url' => 'password/reset',
@@ -319,7 +319,7 @@ return [
             'icon' => 'fas fa-car',
             'submenu' => [
                 [
-                    'text' => 'Car',
+                    'text' => 'All Cars',
                     'url' => 'admin/cars',
                     'icon' => 'fas fa-list',
                 ],
@@ -329,7 +329,23 @@ return [
                     'icon' => 'fas fa-info-circle',
                 ],
             ]
-        ]
+        ],
+        [
+            'text' => 'Reservations',
+            'icon' => 'fas fa-book',
+            'submenu' => [
+                [
+                    'text' => 'All Reservations',
+                    'url' => 'admin/reservations',
+                    'icon' => 'fas fa-calendar-alt',
+                ],
+                [
+                    'text' => 'Reservation Status',
+                    'url' => 'admin/reservations/status',
+                    'icon' => 'fas fa-info-circle',
+                ],
+            ],
+        ],
     ],
 
     /*

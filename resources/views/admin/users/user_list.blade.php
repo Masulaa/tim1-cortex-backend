@@ -43,8 +43,7 @@
                             <td>{{ $user->is_admin ? 'yes' : 'no' }}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>
-                                <a href="{{ route('admin.users.show', $user->id) }}"
-                                    class="btn btn-primary btn-sm">Details</a>
+                                <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info btn-sm">Details</a>
                                 <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this user?');"
