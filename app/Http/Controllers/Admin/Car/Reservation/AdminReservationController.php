@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Car;
+namespace App\Http\Controllers\Admin\Car\Reservation;
 
 use App\Models\Car;
 use App\Models\Reservation;

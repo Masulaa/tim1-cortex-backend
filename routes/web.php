@@ -4,12 +4,12 @@ use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     AdminController,
-    Car\AdminCarController,
-    Car\AdminCarStatusController,
+    Car\Car\AdminCarController,
+    Car\Car\AdminCarStatusController,
     User\AdminUserController,
     User\AdminSetterController,
     User\AdminUserBlockController,
-    Car\AdminReservationController
+    Car\Reservation\AdminReservationController
 };
 
 Route::get('/', function () {
