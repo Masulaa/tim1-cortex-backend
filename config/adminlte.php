@@ -313,11 +313,23 @@ return [
             'url' => 'admin/users',
             'icon' => 'fas fa-users',
         ],
+
         [
             'text' => 'Cars',
-            'url' => 'admin/cars',
             'icon' => 'fas fa-car',
-        ],
+            'submenu' => [
+                [
+                    'text' => 'Car',
+                    'url' => 'admin/cars',
+                    'icon' => 'fas fa-list',
+                ],
+                [
+                    'text' => 'Car Status',
+                    'url' => 'admin/cars/status',
+                    'icon' => 'fas fa-info-circle',
+                ],
+            ]
+        ]
     ],
 
     /*

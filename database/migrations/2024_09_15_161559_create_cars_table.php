@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('fuel_type');
             $table->integer('doors');
             $table->integer('price_per_day');
-            $table->string('status')->default('available'); // Status (available,under maintenance, out of order)
+            $table->string('status')->default('available'); // available, reserved, under maintenance, out of order
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();

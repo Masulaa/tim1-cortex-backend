@@ -16,6 +16,8 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     { {
+            \Log::info('IsAdmin middleware: ' . Auth::user()->is_admin);
+
             if (Auth::check() && Auth::user()->is_admin) {
                 return $next($request);
             }

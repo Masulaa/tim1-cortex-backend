@@ -25,7 +25,7 @@ class AdminCarController extends Controller
 
     public function create(Request $request)
     {
-        $this->checkAdmin($request);
+
         return view('admin.cars-create'); // Kreiraj ovu Blade stranicu
     }
 
@@ -90,4 +90,6 @@ class AdminCarController extends Controller
 
         return redirect()->route('admin.cars.index')->with('success', 'Car deleted successfully');
     }
+
+
 }
