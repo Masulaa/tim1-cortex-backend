@@ -63,7 +63,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Available</h3>
                 </div>
-                <div id="available" class="kanban-column card-body">
+                <div id="available" class="kanban-column card-body" data-status="available">
                     @foreach ($cars as $car)
                         @if ($car->status === 'available')
                             <div class="kanban-item card mb-2" draggable="true" data-id="{{ $car->id }}"
@@ -86,7 +86,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Reserved</h3>
                 </div>
-                <div id="reserved" class="kanban-column card-body">
+                <div id="reserved" class="kanban-column card-body" data-status="reserved">
                     @foreach ($cars as $car)
                         @if ($car->status === 'reserved')
                             <div class="kanban-item card mb-2" draggable="true" data-id="{{ $car->id }}"
@@ -109,7 +109,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Under Maintenance</h3>
                 </div>
-                <div id="maintenance" class="kanban-column card-body">
+                <div id="maintenance" class="kanban-column card-body" data-status="under maintenance">
                     @foreach ($cars as $car)
                         @if ($car->status === 'under maintenance')
                             <div class="kanban-item card mb-2" draggable="true" data-id="{{ $car->id }}"
@@ -132,7 +132,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Out of Order</h3>
                 </div>
-                <div id="out_of_order" class="kanban-column card-body">
+                <div id="out_of_order" class="kanban-column card-body" data-status="out of order">
                     @foreach ($cars as $car)
                         @if ($car->status === 'out of order')
                             <div class="kanban-item card mb-2" draggable="true" data-id="{{ $car->id }}"
@@ -209,6 +209,10 @@
                 const item = document.querySelector(`[data-id='${id}']`);
                 column.appendChild(item);
                 item.classList.remove('dragging');
+
+                // Ažuriranje statusa automobila u realnom vremenu
+                const newStatus = column.getAttribute('data-status');
+                updateCarStatus(id, newStatus); // Funkcija za slanje AJAX zahteva
             });
         });
 
@@ -265,5 +269,28 @@
                 item.classList.remove('dragging');
             });
         });
+
+        // Funkcija za ažuriranje statusa automobila koristeći AJAX
+        function updateCarStatus(carId, newStatus) {
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch(`/admin/cars/${carId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     </script>
 @endsection

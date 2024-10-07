@@ -13,9 +13,6 @@ class AdminCarStatusController extends Controller
     {
         $cars = Car::all();
 
-
-        \Log::info('carStatus method called');
-
         return view('admin.cars.car_status', compact('cars'));
     }
 

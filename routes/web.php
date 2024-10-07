@@ -9,7 +9,8 @@ use App\Http\Controllers\Admin\{
     User\AdminUserController,
     User\AdminSetterController,
     User\AdminUserBlockController,
-    Car\Reservation\AdminReservationController
+    Car\Reservation\AdminReservationController,
+    Car\Reservation\AdminReservationStatusController
 };
 
 Route::get('/', function () {
@@ -51,6 +52,9 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::post('users/{id}/set-admin', [AdminSetterController::class, 'setAdmin'])->name('admin.users.setadmin');
     Route::post('users/{id}/remove-admin', [AdminSetterController::class, 'removeAdmin'])->name('admin.users.removeadmin');
 
+    Route::get('/admin/reservations/status', [AdminReservationStatusController::class, 'reservationStatus'])->name('admin.reservations.status');
+    Route::put('/admin/reservations/{id}/status', [AdminReservationStatusController::class, 'updateStatus'])->name('admin.reservations.updateStatus');
+
     Route::resource('admin/reservations', AdminReservationController::class)->names([
         'index' => 'admin.reservations.index',
         'create' => 'admin.reservations.create',
@@ -60,6 +64,8 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
         'update' => 'admin.reservations.update',
         'destroy' => 'admin.reservations.destroy',
     ]);
+
+
 
     Route::get('admin/reservations/{id}/invoice', [AdminReservationController::class, 'generateInvoice'])->name('admin.reservations.invoice');
 
