@@ -135,6 +135,24 @@
 
 @section('js')
     <script>
+        document.getElementById('search').addEventListener('input', filterReservations);
+
+        function filterReservations() {
+            const searchValue = document.getElementById('search').value.toLowerCase();
+            const items = document.querySelectorAll('.kanban-item');
+
+            items.forEach(item => {
+                const matchesSearch = item.querySelector('.card-title').textContent.toLowerCase().includes(
+                    searchValue);
+
+                if (matchesSearch) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
         const columns = document.querySelectorAll('.kanban-column');
 
         columns.forEach(column => {
