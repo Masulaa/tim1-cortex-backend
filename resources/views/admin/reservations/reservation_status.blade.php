@@ -26,7 +26,9 @@
                 <div id="pending" class="kanban-column card-body" data-status="pending">
                     @foreach ($reservations as $reservation)
                         @if ($reservation->status === 'pending')
-                            <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}">
+                            <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}"
+                                data-user="{{ $reservation->user->name }}"
+                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $reservation->user->name }} - {{ $reservation->car->make }}
                                         {{ $reservation->car->model }}</h5>
@@ -48,7 +50,9 @@
                 <div id="reserved" class="kanban-column card-body" data-status="reserved">
                     @foreach ($reservations as $reservation)
                         @if ($reservation->status === 'reserved')
-                            <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}">
+                            <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}"
+                                data-user="{{ $reservation->user->name }}"
+                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $reservation->user->name }} - {{ $reservation->car->make }}
                                         {{ $reservation->car->model }}</h5>
@@ -70,7 +74,9 @@
                 <div id="in_use" class="kanban-column card-body" data-status="in use">
                     @foreach ($reservations as $reservation)
                         @if ($reservation->status === 'in use')
-                            <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}">
+                            <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}"
+                                data-user="{{ $reservation->user->name }}"
+                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $reservation->user->name }} - {{ $reservation->car->make }}
                                         {{ $reservation->car->model }}</h5>
@@ -92,7 +98,9 @@
                 <div id="returned" class="kanban-column card-body" data-status="returned">
                     @foreach ($reservations as $reservation)
                         @if ($reservation->status === 'returned')
-                            <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}">
+                            <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}"
+                                data-user="{{ $reservation->user->name }}"
+                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $reservation->user->name }} - {{ $reservation->car->make }}
                                         {{ $reservation->car->model }}</h5>
@@ -142,8 +150,9 @@
             const items = document.querySelectorAll('.kanban-item');
 
             items.forEach(item => {
-                const matchesSearch = item.querySelector('.card-title').textContent.toLowerCase().includes(
-                    searchValue);
+                const user = item.getAttribute('data-user').toLowerCase();
+                const car = item.getAttribute('data-car').toLowerCase();
+                const matchesSearch = user.includes(searchValue) || car.includes(searchValue);
 
                 if (matchesSearch) {
                     item.style.display = '';
@@ -152,6 +161,7 @@
                 }
             });
         }
+
 
         const columns = document.querySelectorAll('.kanban-column');
 
