@@ -17,6 +17,17 @@
         <input type="text" id="search" class="form-control mb-3" placeholder="Search for reservation..." />
     </div>
 
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="startDateFilter">Start Date</label>
+            <input type="date" id="startDateFilter" class="form-control">
+        </div>
+        <div class="col-md-3 ml-2">
+            <label for="endDateFilter">End Date</label>
+            <input type="date" id="endDateFilter" class="form-control">
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-3">
             <div class="card">
@@ -28,7 +39,9 @@
                         @if ($reservation->status === 'pending')
                             <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}"
                                 data-user="{{ $reservation->user->name }}"
-                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}">
+                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}"
+                                data-start-date="{{ $reservation->start_date }}"
+                                data-end-date="{{ $reservation->end_date }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $reservation->user->name }} - {{ $reservation->car->make }}
                                         {{ $reservation->car->model }}</h5>
@@ -52,7 +65,9 @@
                         @if ($reservation->status === 'reserved')
                             <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}"
                                 data-user="{{ $reservation->user->name }}"
-                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}">
+                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}"
+                                data-start-date="{{ $reservation->start_date }}"
+                                data-end-date="{{ $reservation->end_date }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $reservation->user->name }} - {{ $reservation->car->make }}
                                         {{ $reservation->car->model }}</h5>
@@ -76,7 +91,9 @@
                         @if ($reservation->status === 'in use')
                             <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}"
                                 data-user="{{ $reservation->user->name }}"
-                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}">
+                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}"
+                                data-start-date="{{ $reservation->start_date }}"
+                                data-end-date="{{ $reservation->end_date }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $reservation->user->name }} - {{ $reservation->car->make }}
                                         {{ $reservation->car->model }}</h5>
@@ -100,7 +117,9 @@
                         @if ($reservation->status === 'returned')
                             <div class="kanban-item card mb-2" draggable="true" data-id="{{ $reservation->id }}"
                                 data-user="{{ $reservation->user->name }}"
-                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}">
+                                data-car="{{ $reservation->car->make }} {{ $reservation->car->model }}"
+                                data-start-date="{{ $reservation->start_date }}"
+                                data-end-date="{{ $reservation->end_date }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $reservation->user->name }} - {{ $reservation->car->make }}
                                         {{ $reservation->car->model }}</h5>
@@ -144,17 +163,27 @@
 @section('js')
     <script>
         document.getElementById('search').addEventListener('input', filterReservations);
+        document.getElementById('startDateFilter').addEventListener('change', filterReservations);
+        document.getElementById('endDateFilter').addEventListener('change', filterReservations);
 
         function filterReservations() {
             const searchValue = document.getElementById('search').value.toLowerCase();
+            const startDateValue = document.getElementById('startDateFilter').value;
+            const endDateValue = document.getElementById('endDateFilter').value;
+
             const items = document.querySelectorAll('.kanban-item');
 
             items.forEach(item => {
                 const user = item.getAttribute('data-user').toLowerCase();
                 const car = item.getAttribute('data-car').toLowerCase();
-                const matchesSearch = user.includes(searchValue) || car.includes(searchValue);
+                const startDate = item.getAttribute('data-start-date');
+                const endDate = item.getAttribute('data-end-date');
 
-                if (matchesSearch) {
+                const matchesSearch = user.includes(searchValue) || car.includes(searchValue);
+                const matchesStartDate = !startDateValue || new Date(startDate) >= new Date(startDateValue);
+                const matchesEndDate = !endDateValue || new Date(endDate) <= new Date(endDateValue);
+
+                if (matchesSearch && matchesStartDate && matchesEndDate) {
                     item.style.display = '';
                 } else {
                     item.style.display = 'none';
@@ -164,7 +193,6 @@
 
 
         const columns = document.querySelectorAll('.kanban-column');
-
         columns.forEach(column => {
             column.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -206,13 +234,12 @@
                         status: newStatus
                     })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.message);
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                .catch(error => console.error('There was a problem with the fetch operation:', error));
         }
     </script>
 @endsection
