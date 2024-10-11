@@ -13,7 +13,64 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Reservations</h3>
+            <h3 class="card-title">Pending Reservations</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Car</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($reservations->where('status', 'pending') as $reservation)
+                        <tr>
+                            <td>{{ $reservation->user->name }}</td>
+                            <td>{{ $reservation->car->make }} {{ $reservation->car->model }}</td>
+                            <td>{{ $reservation->start_date }}</td>
+                            <td>{{ $reservation->end_date }}</td>
+                            <td>
+                                <form action="{{ route('admin.reservations.accept', $reservation->id) }}" method="POST"
+                                    style="display:inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Accept
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('admin.reservations.destroy', $reservation->id) }}" method="POST"
+                                    style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Reject
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">All Reservations</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-bordered">
@@ -28,7 +85,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($reservations as $reservation)
+                    @foreach ($reservations->where('status', '!=', 'pending') as $reservation)
                         <tr>
                             <td>{{ $reservation->user->name }}</td>
                             <td>{{ $reservation->car->make }} {{ $reservation->car->model }}</td>
@@ -44,7 +101,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('Are you sure you want to cancel this reservation?');">
-                                        Cancel
+                                        Delete
                                     </button>
                                 </form>
 
@@ -55,7 +112,7 @@
                                         onclick="window.open('{{ route('admin.reservations.invoice', $reservation->id) }}', '_blank')"
                                         class="btn btn-primary btn-sm">Print Invoice</button>
                                 @else
-                                    <button class="btn btn-success btn-sm" disabled>Download PDF</button>
+                                    <button class="btn btn-success btn-sm" disabled>Download Invoice</button>
                                     <button class="btn btn-primary btn-sm" disabled>Print Invoice</button>
                                 @endif
                             </td>

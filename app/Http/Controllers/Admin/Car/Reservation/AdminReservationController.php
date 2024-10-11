@@ -45,6 +45,24 @@ class AdminReservationController extends Controller
         return redirect()->route('admin.reservations.index')->with('success', 'Reservation updated successfully');
     }
 
+    public function accept($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+        $reservation->status = 'reserved';
+        $reservation->save();
+
+        $car = $reservation->car;
+        if ($car) {
+            $car->status = 'reserved';
+            $car->save();
+        }
+
+        // Ovdje možeš dodati logiku za slanje notifikacije korisniku
+
+        return redirect()->back()->with('success', 'Reservation is accepted');
+    }
+
+
     public function destroy($id)
     {
         $reservation = Reservation::findOrFail($id);

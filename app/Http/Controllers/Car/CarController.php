@@ -7,7 +7,8 @@ use App\Models\Car;
 use App\Http\Requests\Car\Car\{
     CheckAvailabilityRequest,
     StoreCarRequest,
-    UpdateCarRequest};
+    UpdateCarRequest
+};
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -21,8 +22,10 @@ class CarController extends Controller
         $cars = Car::all();
         // $cars = Car::where('availability', true)->get();
 
-        return response()->json(['cars' => $cars,
-        'message' => 'Successfully listed cars',], 200);
+        return response()->json([
+            'cars' => $cars,
+            'message' => 'Successfully listed cars',
+        ], 200);
     }
 
     /**
@@ -36,19 +39,8 @@ class CarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCarRequest $request)
+    public function store(Request $request)
     {
-        $fields = $request->validated();
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('car_images', 'public');
-            $fields['image'] = $imagePath;
-        }
-
-        $car = Car::create($fields);
-
-        return response()->json(['car' => $car,
-        'message' => 'Successfully stored the car',], 201);
     }
 
     /**
@@ -61,8 +53,10 @@ class CarController extends Controller
             return response()->json(['message' => 'Car not found'], 404);
         }
 
-        return response()->json(['car' => $car,
-        'message' => 'Successfully listed the car',], 200);
+        return response()->json([
+            'car' => $car,
+            'message' => 'Successfully listed the car',
+        ], 200);
     }
 
     public function checkAvailability(CheckAvailabilityRequest $request)

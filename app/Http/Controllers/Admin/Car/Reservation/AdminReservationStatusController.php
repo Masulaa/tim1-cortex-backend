@@ -20,8 +20,25 @@ class AdminReservationStatusController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $reservation = Reservation::findOrFail($id);
-        $reservation->status = $request->input('status');
+        $newStatus = $request->input('status');
+        $reservation->status = $newStatus;
         $reservation->save();
+
+        $car = $reservation->car;
+        if ($car) {
+            switch ($newStatus) {
+                case 'reserved':
+                    $car->status = 'reserved';
+                    break;
+                case 'in use':
+                    $car->status = 'reserved';
+                    break;
+                case 'returned':
+                    $car->status = 'available';
+                    break;
+            }
+            $car->save();
+        }
 
         return response()->json(['message' => 'Reservation status updated successfully']);
     }

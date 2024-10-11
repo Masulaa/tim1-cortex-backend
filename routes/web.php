@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
 
     Route::get('/admin/reservations/status', [AdminReservationStatusController::class, 'reservationStatus'])->name('admin.reservations.status');
     Route::put('/admin/reservations/{id}/status', [AdminReservationStatusController::class, 'updateStatus'])->name('admin.reservations.updateStatus');
+    Route::post('/reservations/{id}/accept', [AdminReservationController::class, 'accept'])->name('admin.reservations.accept');
 
     Route::resource('admin/reservations', AdminReservationController::class)->names([
         'index' => 'admin.reservations.index',
