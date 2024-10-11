@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('car_id')->constrained()->onDelete('cascade');
-            $table->date('start_date')->change();
-            $table->date('end_date')->change();
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->integer('total_price');
             $table->string('status')->default('pending'); // pending, reserved, in use, returned
             $table->timestamps();
