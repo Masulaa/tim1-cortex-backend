@@ -45,9 +45,15 @@ class ReservationController extends Controller
     {
         $reservations = Reservation::where('user_id', $user_id)->get();
 
-        Reservation::where('status', 'reserved')
+        $reservedReservationsCount = Reservation::where('status', 'reserved')
             ->where('start_date', '<=', now())
-            ->update(['status' => 'in use']);
+            ->count();
+
+        if ($reservedReservationsCount > 0) {
+            Reservation::where('status', 'reserved')
+                ->where('start_date', '<=', now())
+                ->update(['status' => 'in use']);
+        }
 
 
         return response()->json([

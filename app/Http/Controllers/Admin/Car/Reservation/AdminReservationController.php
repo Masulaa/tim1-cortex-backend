@@ -15,9 +15,15 @@ class AdminReservationController extends Controller
     public function index(Request $request)
     {
 
-        Reservation::where('status', 'reserved')
+        $reservedReservationsCount = Reservation::where('status', 'reserved')
             ->where('start_date', '<=', now())
-            ->update(['status' => 'in use']);
+            ->count();
+
+        if ($reservedReservationsCount > 0) {
+            Reservation::where('status', 'reserved')
+                ->where('start_date', '<=', now())
+                ->update(['status' => 'in use']);
+        }
 
         $reservations = Reservation::with(['car', 'user'])
             ->orderBy('created_at', 'desc')
@@ -59,7 +65,6 @@ class AdminReservationController extends Controller
             $car->save();
         }
 
-        // Ovdje možeš dodati logiku za slanje notifikacije korisniku
 
         return redirect()->back()->with('success', 'Reservation is accepted');
     }
