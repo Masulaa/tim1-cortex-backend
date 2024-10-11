@@ -31,7 +31,7 @@ class ReservationController extends Controller
             $period = Carbon::parse($reservation->start_date)
                 ->toPeriod($reservation->end_date);
             foreach ($period as $date) {
-                $reservedDates[] = $date->format('Y-m-d');
+                $reservedDates[] = $date->format('Y-m-d H:i:s');
             }
         }
 
