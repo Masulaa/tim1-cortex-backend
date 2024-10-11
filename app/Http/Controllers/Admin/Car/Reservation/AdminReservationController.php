@@ -14,13 +14,15 @@ class AdminReservationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Reservation::query();
 
-        if ($request->has('status')) {
-            $query->where('status', $request->input('status'));
-        }
+        Reservation::where('status', 'reserved')
+            ->where('start_date', '<=', now())
+            ->update(['status' => 'in use']);
 
-        $reservations = $query->with('car', 'user')->get();
+        $reservations = Reservation::with(['car', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('admin.reservations.reservation_list', compact('reservations'));
     }
 

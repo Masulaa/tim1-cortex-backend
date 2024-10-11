@@ -12,7 +12,6 @@ class AdminReservationStatusController extends Controller
     public function reservationStatus()
     {
         $reservations = Reservation::with('car', 'user')->get();
-        \Log::info('reservationStatus method called');
 
         return view('admin.reservations.reservation_status', compact('reservations'));
     }

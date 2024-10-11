@@ -24,8 +24,8 @@ class StoreReservationRequest extends FormRequest
         return [
             'car_id' => 'required|exists:cars,id',
             'user_id' => 'required|exists:users,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'start_date' => 'required|date_format:Y-m-d H:i:s',
+            'end_date' => 'required|date_format:Y-m-d H:i:s|after:start_date',
             'total_price' => 'nullable|numeric|min:'
         ];
     }
