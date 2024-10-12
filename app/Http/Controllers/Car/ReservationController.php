@@ -62,6 +62,20 @@ class ReservationController extends Controller
         ], 200);
     }
 
+    public function show($id)
+    {
+        $reservation = Reservation::find($id);
+
+        if (!$reservation) {
+            return response()->json(['message' => 'Reservation not found'], 404);
+        }
+
+        return response()->json([
+            'reservation' => $reservation,
+            'message' => 'Successfully listed the reservation'
+        ], 200);
+    }
+
     public function store(StoreReservationRequest $request)
     {
         $validated = $request->validated();

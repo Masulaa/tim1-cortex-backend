@@ -24,11 +24,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/reservations', [ReservationController::class, 'store']);
     Route::put('/reservations/{id}', [ReservationController::class, 'update']);
+    Route::get('/reservations/{id}', [ReservationController::class, 'show']);
     Route::get('reservations/users/{user_id}', [ReservationController::class, 'userReservations']);
     Route::get('/reservations/{car_id}/reserved-dates', [ReservationController::class, 'reservedDates']);
 
     Route::get('/reservations/{id}/ratings', [RatingController::class, 'index']);
-    Route::post('/reservations/{reservationIrd}/rate/{carId}', [RatingController::class, 'store']);
+    Route::post('/reservations/{reservationId}/rate/{carId}', [RatingController::class, 'store']);
 
 });
 
