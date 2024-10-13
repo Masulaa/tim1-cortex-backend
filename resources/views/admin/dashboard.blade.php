@@ -139,7 +139,6 @@
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Monthly Reservations Chart
         var ctx = document.getElementById('reservationsChart').getContext('2d');
         var reservationsChart = new Chart(ctx, {
             type: 'bar',
@@ -149,7 +148,7 @@
                 ],
                 datasets: [{
                     label: 'Number of Reservations',
-                    data: @json($monthlyReservations),
+                    data: @json(array_slice($monthlyReservations, 0, 12)), // Uzimaš samo 12 meseci
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
@@ -164,7 +163,7 @@
             }
         });
 
-        // Monthly Ratings Chart (Bar chart to match the design)
+        // Monthly Ratings Chart
         var ctx2 = document.getElementById('ratingsChart').getContext('2d');
         var ratingsChart = new Chart(ctx2, {
             type: 'bar',
@@ -174,7 +173,7 @@
                 ],
                 datasets: [{
                     label: 'Number of Ratings',
-                    data: @json($monthlyRatings),
+                    data: @json(array_slice($monthlyRatings, 0, 12)), // Uzimaš samo 12 meseci
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
