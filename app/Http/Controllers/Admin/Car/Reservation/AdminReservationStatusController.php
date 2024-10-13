@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin\Car\Reservation;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationReturnedMail;
+
 use App\Http\Controllers\Controller;
 
 class AdminReservationStatusController extends Controller
@@ -34,6 +37,8 @@ class AdminReservationStatusController extends Controller
                     break;
                 case 'returned':
                     $car->status = 'available';
+                    $user = $reservation->user;
+                    Mail::to($user->email)->send(new ReservationReturnedMail($user, $reservation));
                     break;
             }
             $car->save();

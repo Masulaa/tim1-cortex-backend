@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ReservationAcceptedMail extends Mailable
+class ReservationReturnedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -33,7 +33,11 @@ class ReservationAcceptedMail extends Mailable
      */
     public function build()
     {
-        return $this->from(env('MAIL_FROM_ADDRESS'))
-            ->subject('Your Reservation is Accepted')->view('emails.reservation_accepted');
+        return $this->view('emails.reservation_completed')
+            ->subject('Your Reservation is Completed')
+            ->with([
+                'userName' => $this->user->name,
+                'reservationDetails' => $this->reservation,
+            ]);
     }
 }
