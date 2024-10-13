@@ -41,7 +41,6 @@
                 <div class="icon">
                     <i class="fas fa-star"></i>
                 </div>
-
             </div>
         </div>
 
@@ -136,9 +135,11 @@
         </div>
     </div>
 @stop
+
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Monthly Reservations Chart
         var ctx = document.getElementById('reservationsChart').getContext('2d');
         var reservationsChart = new Chart(ctx, {
             type: 'bar',
@@ -163,23 +164,20 @@
             }
         });
 
-        @php
-            $ratingsData = $monthlyRatings ?? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        @endphp
-
+        // Monthly Ratings Chart (Bar chart to match the design)
         var ctx2 = document.getElementById('ratingsChart').getContext('2d');
         var ratingsChart = new Chart(ctx2, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
                     'October', 'November', 'December'
                 ],
                 datasets: [{
                     label: 'Number of Ratings',
-                    data: @json($ratingsData),
-                    fill: false,
+                    data: @json($monthlyRatings),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
-                    tension: 0.1
+                    borderWidth: 1
                 }]
             },
             options: {
