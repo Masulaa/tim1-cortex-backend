@@ -53,13 +53,15 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-
         if (!$car) {
             return response()->json(['message' => 'Car not found'], 404);
         }
 
+        $reservationIds = $car->reservations()->pluck('id');
+
         return response()->json([
             'car' => $car,
+            'reservation_ids' => $reservationIds,
             'message' => 'Successfully listed the car',
         ], 200);
     }
