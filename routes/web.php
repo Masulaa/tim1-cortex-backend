@@ -10,7 +10,8 @@ use App\Http\Controllers\Admin\{
     User\AdminSetterController,
     User\AdminUserBlockController,
     Car\Reservation\AdminReservationController,
-    Car\Reservation\AdminReservationStatusController
+    Car\Reservation\AdminReservationStatusController,
+    Car\Maintenance\AdminMaintenanceController
 };
 
 Route::get('/', function () {
@@ -69,6 +70,16 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
 
 
     Route::get('admin/reservations/{id}/invoice', [AdminReservationController::class, 'generateInvoice'])->name('admin.reservations.invoice');
+
+    Route::resource('admin/maintenances', AdminMaintenanceController::class)->names([
+        'index' => 'admin.maintenances.index',
+        'create' => 'admin.maintenances.create',
+        'store' => 'admin.maintenances.store',
+        'show' => 'admin.maintenances.show',
+        'edit' => 'admin.maintenances.edit',
+        'update' => 'admin.maintenances.update',
+        'destroy' => 'admin.maintenances.destroy',
+    ]);
 
 });
 

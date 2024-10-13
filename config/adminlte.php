@@ -351,6 +351,11 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Maintenance',
+            'url' => 'admin/maintenances',
+            'icon' => 'fas fa-tachometer-alt',
+        ],
     ],
 
     /*
