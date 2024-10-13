@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Car\Reservation;
 
-use App\Mail\RequestFeedbackMail;
-use App\Mail\ReservationCompletedMail;
+
 use App\Models\Car;
 use App\Models\Reservation;
 use App\Models\User;
@@ -45,12 +44,45 @@ class AdminReservationController extends Controller
         return view('admin.reservations.reservation_edit', compact('reservation', 'cars', 'users'));
     }
 
+    public function cancel(Request $request, $id)
+    {
+        $reservation = Reservation::findOrFail($id);
+        $currentTime = now();
+        $startDate = $reservation->start_date;
+
+        $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
+            ? $reservation->total_price * 0.50
+            : 0;
+
+        $reservation->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Reservation cancelled successfully',
+            'cancellation_fee' => $cancellationFee
+        ], 200);
+    }
+
     public function update(Request $request, $id)
     {
         $reservation = Reservation::findOrFail($id);
+        $currentTime = now();
+        $startDate = $reservation->start_date;
+
+        $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
+            ? $reservation->total_price * 0.50
+            : 0;
+
         $reservation->update($request->all());
-        return redirect()->route('admin.reservations.index')->with('success', 'Reservation updated successfully');
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Reservation updated successfully',
+            'cancellation_fee' => $cancellationFee
+        ], 200);
     }
+
+
 
     public function accept($id)
     {
