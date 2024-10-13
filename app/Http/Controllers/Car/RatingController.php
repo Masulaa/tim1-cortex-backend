@@ -16,13 +16,25 @@ class RatingController extends Controller
 
     public function index($id)
     {
-        $ratings = Rating::where('reservation_id', $id)->get();
+
+        $ratings = Rating::with(['user', 'reservation'])
+            ->where('reservation_id', $id)
+            ->get();
 
         return response()->json([
-            'ratings' => $ratings,
+            'ratings' => $ratings->map(function ($rating) {
+                return [
+                    'rating' => $rating->rating,
+                    'comment' => $rating->comment,
+                    'user_name' => $rating->name,
+                    'start_date' => $rating->reservation->start_date,
+                    'end_date' => $rating->reservation->end_date,
+                ];
+            }),
             'message' => 'Successfully listed ratings',
         ], 200);
     }
+
 
     public function store(StoreRatingRequest $request, $reservationId, $carId)
     {
