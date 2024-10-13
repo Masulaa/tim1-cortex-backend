@@ -58,15 +58,127 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        $monthlyReservations = Reservation::select(\DB::raw('MONTH(created_at) as month'), \DB::raw('count(*) as total'))
-            ->groupBy('month')
-            ->pluck('total', 'month')
-            ->toArray();
+        $monthlyReservations = [
+            'October' => 0,
+            'November' => 0,
+            'December' => 0,
+            'January' => 0,
+            'February' => 0,
+            'March' => 0,
+            'April' => 0,
+            'May' => 0,
+            'June' => 0,
+            'July' => 0,
+            'August' => 0,
+            'September' => 0,
+        ];
 
-        $monthlyRatings = Rating::select(\DB::raw('MONTH(created_at) as month'), \DB::raw('count(*) as total'))
+        $reservations = Reservation::select(\DB::raw('MONTH(created_at) as month'), \DB::raw('count(*) as total'))
+            ->whereYear('created_at', date('Y'))
             ->groupBy('month')
-            ->pluck('total', 'month')
-            ->toArray();
+            ->get();
+
+        foreach ($reservations as $reservation) {
+            switch ($reservation->month) {
+                case 10:
+                    $monthlyReservations['October'] = $reservation->total;
+                    break;
+                case 11:
+                    $monthlyReservations['November'] = $reservation->total;
+                    break;
+                case 12:
+                    $monthlyReservations['December'] = $reservation->total;
+                    break;
+                case 1:
+                    $monthlyReservations['January'] = $reservation->total;
+                    break;
+                case 2:
+                    $monthlyReservations['February'] = $reservation->total;
+                    break;
+                case 3:
+                    $monthlyReservations['March'] = $reservation->total;
+                    break;
+                case 4:
+                    $monthlyReservations['April'] = $reservation->total;
+                    break;
+                case 5:
+                    $monthlyReservations['May'] = $reservation->total;
+                    break;
+                case 6:
+                    $monthlyReservations['June'] = $reservation->total;
+                    break;
+                case 7:
+                    $monthlyReservations['July'] = $reservation->total;
+                    break;
+                case 8:
+                    $monthlyReservations['August'] = $reservation->total;
+                    break;
+                case 9:
+                    $monthlyReservations['September'] = $reservation->total;
+                    break;
+            }
+        }
+
+        $monthlyRatings = [
+            'October' => 0,
+            'November' => 0,
+            'December' => 0,
+            'January' => 0,
+            'February' => 0,
+            'March' => 0,
+            'April' => 0,
+            'May' => 0,
+            'June' => 0,
+            'July' => 0,
+            'August' => 0,
+            'September' => 0,
+        ];
+
+        $ratings = Rating::select(\DB::raw('MONTH(created_at) as month'), \DB::raw('count(*) as total'))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('month')
+            ->get();
+
+        foreach ($ratings as $rating) {
+            switch ($rating->month) {
+                case 10:
+                    $monthlyRatings['October'] = $rating->total;
+                    break;
+                case 11:
+                    $monthlyRatings['November'] = $rating->total;
+                    break;
+                case 12:
+                    $monthlyRatings['December'] = $rating->total;
+                    break;
+                case 1:
+                    $monthlyRatings['January'] = $rating->total;
+                    break;
+                case 2:
+                    $monthlyRatings['February'] = $rating->total;
+                    break;
+                case 3:
+                    $monthlyRatings['March'] = $rating->total;
+                    break;
+                case 4:
+                    $monthlyRatings['April'] = $rating->total;
+                    break;
+                case 5:
+                    $monthlyRatings['May'] = $rating->total;
+                    break;
+                case 6:
+                    $monthlyRatings['June'] = $rating->total;
+                    break;
+                case 7:
+                    $monthlyRatings['July'] = $rating->total;
+                    break;
+                case 8:
+                    $monthlyRatings['August'] = $rating->total;
+                    break;
+                case 9:
+                    $monthlyRatings['September'] = $rating->total;
+                    break;
+            }
+        }
 
         $carStatuses = Car::select('status', \DB::raw('count(*) as total'))
             ->groupBy('status')
@@ -89,7 +201,7 @@ class AdminController extends Controller
             'monthlyRatings',
             'carStatuses',
             'reservationStatuses'
-        )); // Ova linija bi trebala biti ispravna
+        ));
     }
 
 }

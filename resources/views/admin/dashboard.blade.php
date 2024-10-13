@@ -135,35 +135,23 @@
         </div>
     </div>
 @stop
-
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Definišemo niz meseci, počevši od trenutnog meseca (oktobar)
+        // Definišemo niz meseci
         var months = ['October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July',
             'August', 'September'
         ];
-
-        // Rotiramo podatke za rezervacije
-        var monthlyReservations = @json($monthlyReservations);
-        var rotatedReservations = [];
-        // Uverimo se da imamo 12 meseci
-        if (monthlyReservations.length === 12) {
-            rotatedReservations = monthlyReservations.slice(9).concat(monthlyReservations.slice(0,
-            9)); // Rotira podatke od oktobra
-        } else {
-            rotatedReservations = monthlyReservations; // Ako nije 12 meseci, ne rotiraj
-        }
 
         // Monthly Reservations Chart
         var ctx = document.getElementById('reservationsChart').getContext('2d');
         var reservationsChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: months, // Postavlja rotirani niz meseci
+                labels: months,
                 datasets: [{
                     label: 'Number of Reservations',
-                    data: rotatedReservations, // Postavlja rotirane podatke za rezervacije
+                    data: @json($monthlyReservations), // Očekuje da su podaci u ispravnom redosledu
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
@@ -178,25 +166,15 @@
             }
         });
 
-        // Rotiramo podatke za ocene
-        var monthlyRatings = @json($monthlyRatings);
-        var rotatedRatings = [];
-        // Uverimo se da imamo 12 meseci
-        if (monthlyRatings.length === 12) {
-            rotatedRatings = monthlyRatings.slice(9).concat(monthlyRatings.slice(0, 9)); // Rotira podatke od oktobra
-        } else {
-            rotatedRatings = monthlyRatings; // Ako nije 12 meseci, ne rotiraj
-        }
-
         // Monthly Ratings Chart
         var ctx2 = document.getElementById('ratingsChart').getContext('2d');
         var ratingsChart = new Chart(ctx2, {
             type: 'bar',
             data: {
-                labels: months, // Postavlja rotirani niz meseci
+                labels: months,
                 datasets: [{
                     label: 'Number of Ratings',
-                    data: rotatedRatings, // Postavlja rotirane podatke za ocene
+                    data: @json($monthlyRatings), // Očekuje da su podaci u ispravnom redosledu
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
@@ -210,5 +188,9 @@
                 }
             }
         });
+
+        // Proveri podatke u konzoli
+        console.log('Monthly Reservations:', @json($monthlyReservations));
+        console.log('Monthly Ratings:', @json($monthlyRatings));
     </script>
 @stop
