@@ -66,25 +66,6 @@ class CarController extends Controller
         ], 200);
     }
 
-    public function checkAvailability(CheckAvailabilityRequest $request)
-    {
-        $validated = $request->validated();
-
-        $car = Car::find($request->car_id);
-
-        $isAvailable = !$car->reservations()
-            ->where(function ($query) use ($request) {
-                $query->whereBetween('start_date', [$request->start_date, $request->end_date])
-                    ->orWhereBetween('end_date', [$request->start_date, $request->end_date]);
-            })->exists();
-
-        if ($isAvailable) {
-            return response()->json(['message' => 'Car is available'], 200);
-        }
-
-        return response()->json(['message' => 'Car is not available'], 400);
-    }
-
     public function updateStatus(Request $request, $id)
     {
         $car = Car::find($id);

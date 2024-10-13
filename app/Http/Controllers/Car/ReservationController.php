@@ -43,7 +43,10 @@ class ReservationController extends Controller
 
     public function userReservations($user_id)
     {
-        $reservations = Reservation::where('user_id', $user_id)->get();
+        $reservations = Reservation::where('user_id', $user_id)
+            ->orderBy('start_date', 'desc')
+            ->get();
+
 
         Reservation::where('status', 'reserved')
             ->where('start_date', '<=', now())
@@ -135,24 +138,7 @@ class ReservationController extends Controller
         return response()->json(['message' => 'Reservation updated successfully'], 200);
     }
 
-    // public function cancelReservation(Request $request, $id)
-    // {
-    //     $reservation = Reservation::find($id);
 
-    //     if (!$reservation) {
-    //         return response()->json(['message' => 'Reservation not found'], 404);
-    //     }
-    //     $now = Carbon::now();
-    //     $startDate = new Carbon($reservation->start_date);
-
-    //     if ($startDate->diffInHours($now) >= 48) {
-    //         $reservation->status = 'cancelled';
-    //         $reservation->save();
-    //         return response()->json(['message' => 'Reservation cancelled successfully'], 200);
-    //     } else {
-    //         return response()->json(['message' => 'Reservation cannot be cancelled less than 48 hours before the start'], 400);
-    //     }
-    // }
     private function calculateTotalPrice(Car $car, $startDate, $endDate)
     {
         $start = new \DateTime($startDate);

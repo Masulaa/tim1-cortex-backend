@@ -17,7 +17,6 @@ class Car extends Model
         'fuel_type',
         'doors',
         'price_per_day',
-        'availability',
         'status',
         'description',
         'image'

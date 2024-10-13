@@ -309,6 +309,11 @@ return [
 
         ['header' => 'labels'],
         [
+            'text' => 'Dashboard',
+            'url' => 'admin',
+            'icon' => 'fas fa-users',
+        ],
+        [
             'text' => 'Users',
             'url' => 'admin/users',
             'icon' => 'fas fa-users',

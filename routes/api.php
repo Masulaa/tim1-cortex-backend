@@ -19,7 +19,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('/cars', CarController::class);
-    Route::post('/cars/check-availability', [CarController::class, 'checkAvailability']);
     Route::put('/cars/{id}/status', [CarController::class, 'updateStatus']);
 
     Route::post('/reservations', [ReservationController::class, 'store']);
