@@ -15,15 +15,10 @@ class AdminReservationController extends Controller
     public function index(Request $request)
     {
 
-        $reservedReservationsCount = Reservation::where('status', 'reserved')
+        Reservation::where('status', 'reserved')
             ->where('start_date', '<=', now())
-            ->count();
+            ->update(['status' => 'in use']);
 
-        if ($reservedReservationsCount > 0) {
-            Reservation::where('status', 'reserved')
-                ->where('start_date', '<=', now())
-                ->update(['status' => 'in use']);
-        }
 
         $reservations = Reservation::with(['car', 'user'])
             ->orderBy('created_at', 'desc')

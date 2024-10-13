@@ -53,4 +53,23 @@ class RatingController extends Controller
         return response()->json(['message' => 'Rating added'], 201);
     }
 
+    public function checkIfRated($reservationId, $carId)
+    {
+        $reservation = Reservation::find($reservationId);
+        if (!$reservation) {
+            return response()->json(['message' => 'Reservation not found'], 404);
+        }
+
+        $existingRating = Rating::where('reservation_id', $reservationId)
+            ->where('car_id', $carId)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if ($existingRating) {
+            return response()->json(['rated' => true, 'message' => 'Car has already been rated'], 200);
+        }
+
+        return response()->json(['rated' => false, 'message' => 'Car has not been rated'], 200);
+    }
+
 }

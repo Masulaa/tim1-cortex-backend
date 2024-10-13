@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/reservations/{id}/ratings', [RatingController::class, 'index']);
     Route::post('/reservations/{reservationId}/rate/{carId}', [RatingController::class, 'store']);
+    Route::get('/reservations/{reservationId}/car/{carId}/check-rating', [RatingController::class, 'checkIfRated']);
 
 });
 

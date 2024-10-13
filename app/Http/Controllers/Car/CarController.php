@@ -9,6 +9,7 @@ use App\Http\Requests\Car\Car\{
     StoreCarRequest,
     UpdateCarRequest
 };
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -18,9 +19,13 @@ class CarController extends Controller
      */
     public function index()
     {
+        Reservation::where('status', 'reserved')
+            ->where('start_date', '<=', now())
+            ->update(['status' => 'in use']);
+
 
         $cars = Car::all();
-        // $cars = Car::where('availability', true)->get();
+
 
         return response()->json([
             'cars' => $cars,
