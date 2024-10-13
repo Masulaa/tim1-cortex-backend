@@ -13,6 +13,14 @@ class AdminMaintenanceController extends Controller
 {
     public function index()
     {
+        Car::whereHas('maintenances', function ($query) {
+            $query->where('scheduled_date', today());
+        })->update(['status' => 'under_maintenance']);
+
+        Car::whereHas('maintenances', function ($query) {
+            $query->where('scheduled_date', '<', today());
+        })->update(['status' => 'completed']);
+
         $maintenances = Maintenance::with('car')->get();
         $cars = Car::all();
         return view('admin.maintenances.maintenance_list', compact('maintenances', 'cars')); // Proslijedi i $cars

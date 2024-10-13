@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Car;
 
 use App\Mail\ReservationPendingMail;
 use App\Models\Car;
+use App\Models\Maintenance;
 use App\Models\Reservation;
 use App\Models\User;
 use Carbon\Carbon;
@@ -20,13 +21,16 @@ class ReservationController extends Controller
 
     public function reservedDates($car_id)
     {
-
         $reservations = Reservation::where('car_id', $car_id)
             ->whereIn('status', ['pending', 'reserved', 'in use'])
             ->get(['start_date', 'end_date']);
 
+        $maintenances = Maintenance::where('car_id', $car_id)
+            ->whereIn('status', ['pending', 'under maintenance'])
+            ->get(['scheduled_date']);
 
         $reservedDates = [];
+
         foreach ($reservations as $reservation) {
             $period = Carbon::parse($reservation->start_date)
                 ->toPeriod($reservation->end_date);
@@ -35,12 +39,16 @@ class ReservationController extends Controller
             }
         }
 
+        foreach ($maintenances as $maintenance) {
+            $reservedDates[] = Carbon::parse($maintenance->scheduled_date)
+                ->format('Y-m-d H:i:s');
+        }
+
         return response()->json([
             'reserved_dates' => $reservedDates,
             'message' => 'Successfully listed reserved dates',
         ], 200);
     }
-
     public function userReservations($user_id)
     {
         $reservations = Reservation::where('user_id', $user_id)

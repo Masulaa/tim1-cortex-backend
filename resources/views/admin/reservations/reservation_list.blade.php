@@ -24,6 +24,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>User</th>
                         <th>Car</th>
                         <th>Start Date</th>
@@ -34,6 +35,7 @@
                 <tbody>
                     @foreach ($reservations->where('status', 'pending') as $reservation)
                         <tr>
+                            <td>{{ $reservation->id }}</td>
                             <td>{{ $reservation->user->name }}</td>
                             <td>{{ $reservation->car->make }} {{ $reservation->car->model }}</td>
                             <td>{{ $reservation->start_date }}</td>
@@ -76,6 +78,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>User</th>
                         <th>Car</th>
                         <th>Start Date</th>
@@ -87,6 +90,7 @@
                 <tbody>
                     @foreach ($reservations->where('status', '!=', 'pending') as $reservation)
                         <tr>
+                            <td>{{ $reservation->id }}</td>
                             <td>{{ $reservation->user->name }}</td>
                             <td>{{ $reservation->car->make }} {{ $reservation->car->model }}</td>
                             <td>{{ $reservation->start_date }}</td>

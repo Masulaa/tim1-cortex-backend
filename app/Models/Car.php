@@ -31,4 +31,9 @@ class Car extends Model
     {
         return $this->hasMany(Rating::class);
     }
+
+    public function maintenances()
+    {
+        return $this->hasMany(Maintenance::class);
+    }
 }
