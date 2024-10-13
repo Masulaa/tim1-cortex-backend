@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Car\Reservation;
 
+use App\Mail\RequestFeedbackMail;
+use App\Mail\ReservationCompletedMail;
 use App\Models\Car;
 use App\Models\Reservation;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationAcceptedMail;
 
 use App\Http\Controllers\Controller;
 
@@ -14,6 +18,7 @@ class AdminReservationController extends Controller
 {
     public function index(Request $request)
     {
+
 
         Reservation::where('status', 'reserved')
             ->where('start_date', '<=', now())
@@ -23,7 +28,6 @@ class AdminReservationController extends Controller
         $reservations = Reservation::with(['car', 'user'])
             ->orderBy('created_at', 'desc')
             ->get();
-
         return view('admin.reservations.reservation_list', compact('reservations'));
     }
 
@@ -59,6 +63,8 @@ class AdminReservationController extends Controller
             $car->status = 'reserved';
             $car->save();
         }
+        $user = $reservation->user;
+        Mail::to($user->email)->send(new ReservationAcceptedMail($user, $reservation));
 
 
         return redirect()->back()->with('success', 'Reservation is accepted');

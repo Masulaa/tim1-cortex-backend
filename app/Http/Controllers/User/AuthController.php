@@ -8,6 +8,9 @@ use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\UserRegisteredMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class AuthController extends Controller
 {
@@ -17,7 +20,10 @@ class AuthController extends Controller
 
         $user = User::create($fields);
 
+        Mail::to($user->email)->send(new UserRegisteredMail($user));
+
         $token = $user->createToken($request->name);
+
 
         return response()->json([
             'user' => $user,
