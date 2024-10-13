@@ -50,18 +50,25 @@ class AdminReservationController extends Controller
         $currentTime = now();
         $startDate = $reservation->start_date;
 
-        $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
-            ? $reservation->total_price * 0.50
-            : 0;
+        // Primeniti pravilo o otkazu
+        if ($currentTime->diffInHours($startDate) < 48) {
+            $cancellationFee = $reservation->total_price * 0.50;
+            // Ovde možeš dodati logiku za obaveštenje korisnika o naknadi
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Cancellation fee of 50% applies as the cancellation is within 48 hours of the start date.',
+                'cancellation_fee' => $cancellationFee
+            ], 403); // 403 Forbidden ili 422 Unprocessable Entity, zavisno od tvog pravila
+        }
 
         $reservation->delete();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Reservation cancelled successfully',
-            'cancellation_fee' => $cancellationFee
-        ], 200);
+            'message' => 'Reservation cancelled successfully'
+        ], 200); // 200 OK
     }
+
 
     public function update(Request $request, $id)
     {
@@ -69,19 +76,17 @@ class AdminReservationController extends Controller
         $currentTime = now();
         $startDate = $reservation->start_date;
 
-        $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
-            ? $reservation->total_price * 0.50
-            : 0;
+        // Proveri da li je izmena rezervacije manje od 48 sati pre početka
+        if ($currentTime->diffInHours($startDate) < 48) {
+            // Primeniti politiku 50% naknade
+            $cancellationFee = $reservation->total_price * 0.50;
+            // Ovde možeš dodati logiku za obračun ili obaveštenje korisnika o naknadi
+        }
 
         $reservation->update($request->all());
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Reservation updated successfully',
-            'cancellation_fee' => $cancellationFee
-        ], 200);
+        return redirect()->route('admin.reservations.index')->with('success', 'Reservation updated successfully');
     }
-
 
 
     public function accept($id)

@@ -131,20 +131,44 @@ class ReservationController extends Controller
         return response()->json(['message' => 'Reservation created successfully', 'reservation' => $reservation], 201);
     }
 
-    public function update(UpdateReservationRequest $request, $id)
+    public function cancel(Request $request, $id)
     {
-        $reservation = Reservation::find($id);
+        $reservation = Reservation::findOrFail($id);
+        $currentTime = now();
+        $startDate = $reservation->start_date;
 
-        if (!$reservation) {
-            return response()->json(['message' => 'Reservation not found'], 404);
-        }
+        $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
+            ? $reservation->total_price * 0.50
+            : 0;
 
-        $validated = $request->validated();
+        $reservation->delete();
 
-        $reservation->update($validated);
-
-        return response()->json(['message' => 'Reservation updated successfully'], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Reservation cancelled successfully',
+            'cancellation_fee' => $cancellationFee
+        ], 200);
     }
+
+    public function update(Request $request, $id)
+    {
+        $reservation = Reservation::findOrFail($id);
+        $currentTime = now();
+        $startDate = $reservation->start_date;
+
+        $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
+            ? $reservation->total_price * 0.50
+            : 0;
+
+        $reservation->update($request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Reservation updated successfully',
+            'cancellation_fee' => $cancellationFee
+        ], 200);
+    }
+
 
 
     private function calculateTotalPrice(Car $car, $startDate, $endDate)
