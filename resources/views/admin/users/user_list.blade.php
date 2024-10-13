@@ -1,26 +1,24 @@
 @extends('adminlte::page')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'Users')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <h1>Users</h1>
 @endsection
 
 @section('content')
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-
-    <!-- Search Bar -->
-    <div class="form-group">
-        <input type="text" id="search" class="form-control mb-3" placeholder="Search for users..." />
-    </div>
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Users</h3>
+            <h3 class="card-title">All Users</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-bordered" id="users-table">
@@ -40,18 +38,17 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->is_admin ? 'yes' : 'no' }}</td>
+                            <td>{{ $user->is_admin ? 'Yes' : 'No' }}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>
                                 <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info btn-sm">Details</a>
                                 <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                                    onsubmit="return confirm('Are you sure you want to delete this user?');"
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
                                 </form>
                                 @if ($user->is_blocked)
                                     <form action="{{ route('admin.users.unblock', $user->id) }}" method="POST"
@@ -77,6 +74,11 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Create New User</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.users.store') }}" method="POST">

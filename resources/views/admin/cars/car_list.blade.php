@@ -15,6 +15,11 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Cars</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-bordered">
@@ -65,6 +70,11 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Create New Car</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.cars.store') }}" method="POST" enctype="multipart/form-data">
@@ -74,19 +84,16 @@
                     <input type="text" class="form-control" id="make" name="make" placeholder="Car Make"
                         required>
                 </div>
-
                 <div class="form-group">
                     <label for="model">Model</label>
                     <input type="text" class="form-control" id="model" name="model" placeholder="Car Model"
                         required>
                 </div>
-
                 <div class="form-group">
                     <label for="year">Year</label>
                     <input type="number" class="form-control" id="year" name="year" min="1900"
                         max="{{ date('Y') }}" placeholder="Car Year" required>
                 </div>
-
                 <div class="form-group">
                     <label for="transmission">Transmission</label>
                     <select class="form-control" id="transmission" name="transmission" required>
@@ -94,16 +101,15 @@
                         <option value="manual">Manual</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="fuel_type">Fuel Type</label>
                     <select class="form-control" id="fuel_type" name="fuel_type" required>
+                        <option value="petrol">Petrol</option>
                         <option value="diesel">Diesel</option>
-                        <option value="gasoline">Gasoline</option>
-                        <option value="electricity">Electricity</option>
+                        <option value="electric">Electric</option>
+                        <option value="hybrid">Hybrid</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="doors">Doors</label>
                     <select class="form-control" id="doors" name="doors" required>
@@ -113,33 +119,16 @@
                         <option value="5">5</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="price_per_day">Price per Day</label>
-                    <input type="number" class="form-control" id="price_per_day" name="price_per_day" min="0"
+                    <input type="number" class="form-control" id="price_per_day" name="price_per_day"
                         placeholder="Price per Day" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="status">Status</label>
-                    <select class="form-control" id="status" name="status" required>
-                        <option value="available">Available</option>
-                        <option value="under maintenance">Under Maintenance</option>
-                        <option value="out of order">Out of Order</option>
-                    </select>
+                    <label for="image">Image</label>
+                    <input type="file" class="form-control" id="image" name="image" required>
                 </div>
-
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" class="form-control" name="description" rows="3"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="image">Upload Image</label>
-                    <input type="file" class="form-control-file" id="image" name="image">
-                </div>
-
-                <button type="submit" class="btn btn-primary">Add Car</button>
+                <button type="submit" class="btn btn-success">Create Car</button>
             </form>
         </div>
     </div>
