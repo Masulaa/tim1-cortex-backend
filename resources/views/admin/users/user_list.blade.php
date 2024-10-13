@@ -21,6 +21,11 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Users</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-bordered" id="users-table">
@@ -77,6 +82,11 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Create New User</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.users.store') }}" method="POST">

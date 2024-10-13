@@ -310,7 +310,7 @@ return [
         ['header' => 'labels'],
         [
             'text' => 'Dashboard',
-            'url' => 'admin/users',
+            'url' => 'admin',
             'icon' => 'fas fa-tachometer-alt',
         ],
         [
