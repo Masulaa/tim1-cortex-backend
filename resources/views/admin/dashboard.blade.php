@@ -139,20 +139,28 @@
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Definišemo niz meseci, počevši od trenutnog meseca (oktobar)
         var months = ['October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July',
             'August', 'September'
         ];
 
+        // Rotiramo podatke za rezervacije
         var monthlyReservations = @json($monthlyReservations);
-        var rotatedReservations = monthlyReservations.slice(9).concat(monthlyReservations.slice(0,
-            9));
+        var rotatedReservations = [];
+        // Uverimo se da imamo 12 meseci
+        if (monthlyReservations.length === 12) {
+            rotatedReservations = monthlyReservations.slice(9).concat(monthlyReservations.slice(0,
+            9)); // Rotira podatke od oktobra
+        } else {
+            rotatedReservations = monthlyReservations; // Ako nije 12 meseci, ne rotiraj
+        }
 
-
+        // Monthly Reservations Chart
         var ctx = document.getElementById('reservationsChart').getContext('2d');
         var reservationsChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: months,
+                labels: months, // Postavlja rotirani niz meseci
                 datasets: [{
                     label: 'Number of Reservations',
                     data: rotatedReservations, // Postavlja rotirane podatke za rezervacije
@@ -170,14 +178,22 @@
             }
         });
 
+        // Rotiramo podatke za ocene
         var monthlyRatings = @json($monthlyRatings);
-        var rotatedRatings = monthlyRatings.slice(9).concat(monthlyRatings.slice(0, 9));
+        var rotatedRatings = [];
+        // Uverimo se da imamo 12 meseci
+        if (monthlyRatings.length === 12) {
+            rotatedRatings = monthlyRatings.slice(9).concat(monthlyRatings.slice(0, 9)); // Rotira podatke od oktobra
+        } else {
+            rotatedRatings = monthlyRatings; // Ako nije 12 meseci, ne rotiraj
+        }
 
+        // Monthly Ratings Chart
         var ctx2 = document.getElementById('ratingsChart').getContext('2d');
         var ratingsChart = new Chart(ctx2, {
             type: 'bar',
             data: {
-                labels: months,
+                labels: months, // Postavlja rotirani niz meseci
                 datasets: [{
                     label: 'Number of Ratings',
                     data: rotatedRatings, // Postavlja rotirane podatke za ocene
