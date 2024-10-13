@@ -139,16 +139,23 @@
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        var months = ['October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July',
+            'August', 'September'
+        ];
+
+        var monthlyReservations = @json($monthlyReservations);
+        var rotatedReservations = monthlyReservations.slice(9).concat(monthlyReservations.slice(0,
+            9));
+
+
         var ctx = document.getElementById('reservationsChart').getContext('2d');
         var reservationsChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                    'October', 'November', 'December'
-                ],
+                labels: months,
                 datasets: [{
                     label: 'Number of Reservations',
-                    data: @json(array_slice($monthlyReservations, 0, 12)), // Uzimaš samo 12 meseci
+                    data: rotatedReservations, // Postavlja rotirane podatke za rezervacije
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
@@ -163,17 +170,17 @@
             }
         });
 
-        // Monthly Ratings Chart
+        var monthlyRatings = @json($monthlyRatings);
+        var rotatedRatings = monthlyRatings.slice(9).concat(monthlyRatings.slice(0, 9));
+
         var ctx2 = document.getElementById('ratingsChart').getContext('2d');
         var ratingsChart = new Chart(ctx2, {
             type: 'bar',
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                    'October', 'November', 'December'
-                ],
+                labels: months,
                 datasets: [{
                     label: 'Number of Ratings',
-                    data: @json(array_slice($monthlyRatings, 0, 12)), // Uzimaš samo 12 meseci
+                    data: rotatedRatings, // Postavlja rotirane podatke za ocene
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
