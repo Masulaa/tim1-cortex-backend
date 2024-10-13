@@ -26,7 +26,7 @@ class RatingController extends Controller
                 return [
                     'rating' => $rating->rating,
                     'comment' => $rating->comment,
-                    'user_name' => $rating->name,
+                    'user_name' => $rating->user->name,
                     'start_date' => $rating->reservation->start_date,
                     'end_date' => $rating->reservation->end_date,
                 ];
