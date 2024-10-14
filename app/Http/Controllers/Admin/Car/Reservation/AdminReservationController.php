@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Car\Reservation;
 
+use App\Http\Requests\Admin\Car\Reservation\AdminReservationUpdateRequest;
 use App\Models\Car;
 use App\Models\Reservation;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationAcceptedMail;
+
 
 use App\Http\Controllers\Controller;
 
@@ -44,10 +46,21 @@ class AdminReservationController extends Controller
         return view('admin.reservations.reservation_edit', compact('reservation', 'cars', 'users'));
     }
 
-    public function update(Request $request, $id)
+    public function update(AdminReservationUpdateRequest $request, $id)
     {
+
         $reservation = Reservation::findOrFail($id);
-        $reservation->update($request->all());
+
+        $startDate = new \DateTime($request->start_date);
+        $startDate->setTime(11, 0, 0);
+
+        $endDate = new \DateTime($request->end_date);
+        $endDate->setTime(9, 0, 0);
+
+        $reservation->start_date = $startDate;
+        $reservation->end_date = $endDate;
+
+        $reservation->save();
         return redirect()->route('admin.reservations.index')->with('success', 'Reservation updated successfully');
     }
 
