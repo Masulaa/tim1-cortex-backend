@@ -56,7 +56,14 @@ MAIL_PASSWORD=rohlpbstwlnhbtuz
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="quickride321@gmail.com"
 MAIL_FROM_NAME="${APP_NAME}"```
-Create database
+```
+
+Create database: Create a new MySQL database for your application.
+
+Run migrations: Make sure to migrate the database to create the necessary tables.
+
+```
+php artisan migrate
 ```
 
 Start the project
