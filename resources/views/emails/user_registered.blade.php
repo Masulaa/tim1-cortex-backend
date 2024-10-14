@@ -68,13 +68,7 @@
 
         <div class="email-body">
             <p>Thank you for registering with us!</p>
-            <p>We're glad to have you on board. Here are your account details:</p>
-
-            <ul>
-                <li style="color: white; text-decoration: none;">
-                    <strong>Email:</strong> {{ $user->email }}
-                </li>
-            </ul>
+            <p>We're glad to have you on board</p>
 
             <p>We hope you enjoy our services!</p>
 
