@@ -14,7 +14,7 @@ The **Quick Ride** backend is built to support a seamless experience for rent-a-
 
 ## Tech Stack
 - **Backend Framework**: Laravel
-- **Database**: MariaDB
+- **Database**: MYSQL
 - **PDF Generation**: DOMPDF
 - **Version Control**: Git
 - **Admin Dashboard**: AdminLTE 3
