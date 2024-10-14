@@ -71,7 +71,9 @@
             <p>We're glad to have you on board. Here are your account details:</p>
 
             <ul>
-                <li><strong>Email:</strong> {{ $user->email }}</li>
+                <li style="color: white; text-decoration: none;">
+                    <strong>Email:</strong> {{ $user->email }}
+                </li>
             </ul>
 
             <p>We hope you enjoy our services!</p>
