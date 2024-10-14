@@ -58,8 +58,7 @@ MAIL_FROM_ADDRESS="quickride321@gmail.com"
 MAIL_FROM_NAME="${APP_NAME}"```
 Create database
 ```
-# You can also seed the DB to see if everything works
-php artisan db:seed
+
 Start the project
 
 ```
@@ -106,7 +105,7 @@ server {
 }
 ```
 Enable the server block:
-````
+```
 
 
 sudo ln -s /etc/nginx/sites-available/quick-ride /etc/nginx/sites-enabled/
@@ -136,11 +135,12 @@ npm install admin-lte
 Configure AdminLTE
 Make sure to include the AdminLTE CSS and JS files in your Blade templates or layout files.
 
+```
 DOMPDF
 Install DOMPDF
 You can install DOMPDF using Composer:
 
-
+```
 composer require barryvdh/laravel-dompdf
 Publish the configuration (optional)
 
