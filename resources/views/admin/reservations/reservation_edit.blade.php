@@ -35,14 +35,14 @@
 
         <div class="form-group">
             <label for="start_date">Start Date</label>
-            <input type="datetime-local" class="form-control" id="start_date" name="start_date"
-                value="{{ date('Y-m-d\T11:00', strtotime($reservation->start_date)) }}">
+            <input type="date" class="form-control" id="start_date" name="start_date"
+                value="{{ $reservation->start_date->format('Y-m-d') }}">
         </div>
 
         <div class="form-group">
             <label for="end_date">End Date</label>
-            <input type="datetime-local" class="form-control" id="end_date" name="end_date"
-                value="{{ date('Y-m-d\T09:00', strtotime($reservation->end_date)) }}">
+            <input type="date" class="form-control" id="end_date" name="end_date"
+                value="{{ $reservation->end_date->format('Y-m-d') }}">
         </div>
 
         <div class="form-group">
@@ -60,47 +60,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('reservationForm');
             const startDateInput = document.getElementById('start_date');
             const endDateInput = document.getElementById('end_date');
 
-            // Set time to 11:00 for start date and 09:00 for end date
-            function setTimes() {
-                if (startDateInput.value) {
-                    let startDate = new Date(startDateInput.value);
-                    startDate.setHours(11, 0, 0);
-                    startDateInput.value = startDate.toISOString().slice(0, 16); // "yyyy-MM-ddTHH:mm"
-                }
-                if (endDateInput.value) {
-                    let endDate = new Date(endDateInput.value);
-                    endDate.setHours(9, 0, 0);
-                    endDateInput.value = endDate.toISOString().slice(0, 16); // "yyyy-MM-ddTHH:mm"
-                }
-            }
-
-            // Validate that end date is not before start date
-            function validateDates() {
+            form.addEventListener('submit', function(event) {
+                // Pre nego što se pošalje forma, dodajemo fiksno vreme u 11h za start date i 9h za end date
                 let startDate = new Date(startDateInput.value);
+                startDate.setHours(11, 0, 0); // Postavi 11:00
+                startDateInput.value = startDate.toISOString().slice(0, 10); // Datum bez vremena
+
                 let endDate = new Date(endDateInput.value);
-                if (endDate <= startDate) {
-                    alert('End date cannot be before or equal to start date.');
-                    endDateInput.value = ''; // Clear end date if invalid
-                    return false;
-                }
-                return true;
-            }
-
-            // Set the initial times when the form loads
-            setTimes();
-
-            // Re-apply the fixed times when user changes dates
-            startDateInput.addEventListener('change', setTimes);
-            endDateInput.addEventListener('change', setTimes);
-
-            // Prevent form submission if validation fails
-            document.getElementById('reservationForm').addEventListener('submit', function(event) {
-                if (!validateDates()) {
-                    event.preventDefault();
-                }
+                endDate.setHours(9, 0, 0); // Postavi 09:00
+                endDateInput.value = endDate.toISOString().slice(0, 10); // Datum bez vremena
             });
         });
     </script>
