@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Car;
 
+use App\Mail\CancellationInvoiceMail;
 use App\Mail\ReservationPendingMail;
 use App\Models\Car;
 use App\Models\Maintenance;
 use App\Models\Reservation;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\Car\Reservation\{
@@ -141,6 +143,28 @@ class ReservationController extends Controller
             ? $reservation->total_price * 0.50
             : 0;
 
+
+        if ($cancellationFee > 0) {
+            $newTotalPrice = $reservation->total_price - $cancellationFee;
+
+            $reservation->total_price = $newTotalPrice;
+            $reservation->save();
+        }
+
+
+        $pdf = Pdf::loadView('invoices.cancellation_invoice', [
+            'reservation' => $reservation,
+            'cancellationFee' => $cancellationFee,
+        ]);
+
+
+        $pdfFilePath = storage_path('app/public/invoices/cancellation_invoice_' . $reservation->id . '.pdf');
+        $pdf->save($pdfFilePath);
+
+
+        if ($cancellationFee > 0) {
+            \Mail::to($reservation->user->email)->send(new CancellationInvoiceMail($reservation, $cancellationFee, $pdfFilePath));
+        }
         $reservation->delete();
 
         return response()->json([
@@ -153,19 +177,12 @@ class ReservationController extends Controller
     public function update(Request $request, $id)
     {
         $reservation = Reservation::findOrFail($id);
-        $currentTime = now();
-        $startDate = $reservation->start_date;
-
-        $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
-            ? $reservation->total_price * 0.50
-            : 0;
 
         $reservation->update($request->all());
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Reservation updated successfully',
-            'cancellation_fee' => $cancellationFee
+            'message' => 'Reservation updated successfully'
         ], 200);
     }
 
