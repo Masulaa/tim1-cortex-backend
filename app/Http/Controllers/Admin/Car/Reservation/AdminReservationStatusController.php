@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\Car\Reservation;
 
 use App\Models\Reservation;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Mail;
@@ -37,8 +39,12 @@ class AdminReservationStatusController extends Controller
                     break;
                 case 'returned':
                     $car->status = 'available';
+
+                    $pdf = Pdf::loadView('admin.reservations.reservation_invoice', compact('reservation'));
+                    $pdfContent = $pdf->download()->getOriginalContent();
+
                     $user = $reservation->user;
-                    Mail::to($user->email)->send(new ReservationReturnedMail($user, $reservation));
+                    Mail::to($user->email)->send(new ReservationReturnedMail($user, $reservation, $pdfContent));
                     break;
             }
             $car->save();

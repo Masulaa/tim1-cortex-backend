@@ -4,32 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Reservation is Completed</title>
+    <title>Invoice</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            padding: 20px;
         }
 
         .container {
-            max-width: 600px;
+            width: 100%;
+            max-width: 800px;
             margin: 0 auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .footer {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #777;
+        .details,
+        .car-details,
+        .total {
+            margin-bottom: 20px;
+        }
+
+        .total {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -37,23 +36,21 @@
 <body>
 
     <div class="container">
-        <h1>Hello, {{ $userName }}!</h1>
-        <p>Thank you for using our service. We're glad to inform you that your reservation has been successfully
-            completed.</p>
+        <h1>Invoice for Reservation #{{ $reservation->id }}</h1>
 
-        <h2>Reservation Details:</h2>
-        <ul>
-            <li><strong>Reservation ID:</strong> {{ $reservationDetails->id }}</li>
-            <li><strong>Car:</strong> {{ $reservationDetails->car->name }}</li>
-            <li><strong>Start Date:</strong> {{ $reservationDetails->start_date }}</li>
-            <li><strong>End Date:</strong> {{ $reservationDetails->end_date }}</li>
-            <li><strong>Total Price:</strong> {{ $reservationDetails->total_price }} RSD</li>
-        </ul>
+        <div class="details">
+            <p><strong>Customer Name:</strong> {{ $reservation->user->name }}</p>
+            <p><strong>Email:</strong> {{ $reservation->user->email }}</p>
+        </div>
 
-        <p>If you have any questions or need further assistance, feel free to contact us.</p>
+        <div class="car-details">
+            <p><strong>Car:</strong> {{ $reservation->car->name }}</p>
+            <p><strong>Start Date:</strong> {{ $reservation->start_date }}</p>
+            <p><strong>End Date:</strong> {{ $reservation->end_date }}</p>
+        </div>
 
-        <div class="footer">
-            <p>Best regards,<br>Your Car Rental Team</p>
+        <div class="total">
+            <p><strong>Total Price:</strong> {{ $reservation->total_price }} $</p>
         </div>
     </div>
 
