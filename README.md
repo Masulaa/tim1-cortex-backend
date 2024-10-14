@@ -31,7 +31,7 @@ Install dependencies In the terminal, run the following command to install all r
 npm install
 Install additional libraries (if not included in package.json): If you need to install specific libraries, you can use the following commands:
 
-Копирај кȏд
+ ```bash
 npm install axios
 npm install tailwindcss
 npm install @headlessui/react
