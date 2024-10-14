@@ -72,6 +72,7 @@
                                 data-price="{{ $car->price_per_day }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $car->make }} {{ $car->model }}</h5>
+                                    <p class="card-text">{{ substr($car->description, 0, 20) }}...</p>
                                     <small class="text-muted">Price: ${{ $car->price_per_day }}/day</small>
                                 </div>
                             </div>
@@ -94,7 +95,7 @@
                                 data-price="{{ $car->price_per_day }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $car->make }} {{ $car->model }}</h5>
-                                    <p class="card-text">{{ $car->description }}</p>
+                                    <p class="card-text">{{ substr($car->description, 0, 20) }}...</p>
                                     <small class="text-muted">Price: ${{ $car->price_per_day }}/day</small>
                                 </div>
                             </div>
@@ -117,7 +118,7 @@
                                 data-price="{{ $car->price_per_day }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $car->make }} {{ $car->model }}</h5>
-                                    <p class="card-text">{{ $car->description }}</p>
+                                    <p class="card-text">{{ substr($car->description, 0, 20) }}...</p>
                                     <small class="text-muted">Price: ${{ $car->price_per_day }}/day</small>
                                 </div>
                             </div>
@@ -140,7 +141,7 @@
                                 data-price="{{ $car->price_per_day }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $car->make }} {{ $car->model }}</h5>
-                                    <p class="card-text">{{ $car->description }}</p>
+                                    <p class="card-text">{{ substr($car->description, 0, 20) }}...</p>
                                     <small class="text-muted">Price: ${{ $car->price_per_day }}/day</small>
                                 </div>
                             </div>
