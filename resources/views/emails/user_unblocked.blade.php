@@ -62,8 +62,7 @@
             <p>Your account has been successfully unblocked.</p>
             <p>You can now access all our services again.</p>
 
-            <a
-                style="background-color: #4F46E5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px;">
+            <a style="background-color: #4F46E5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px;"
                 href="{{ url('http://front.tim1.cortexakademija.com/home') }}">Visit
                 Our Website</a>
         </div>
