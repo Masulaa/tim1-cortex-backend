@@ -14,6 +14,11 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">All Maintenances</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-bordered">
@@ -55,39 +60,39 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Schedule Maintenance</h3>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Schedule Maintenance</h3>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('admin.maintenances.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="car_id">Car:</label>
-                        <select name="car_id" id="car_id" class="form-control" required>
-                            @foreach ($cars as $car)
-                                <option value="{{ $car->id }}">{{ $car->make }} {{ $car->model }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduled_date">Scheduled Date:</label>
-                        <input type="date" name="scheduled_date" id="scheduled_date" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <textarea name="description" id="description" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status:</label>
-                        <select name="status" id="status" class="form-control" required disabled>
-                            <option value="pending" selected>Pending</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Schedule Maintenance</button>
-                </form>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
             </div>
         </div>
-
-    @endsection
+        <div class="card-body">
+            <form action="{{ route('admin.maintenances.store') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label for="car_id">Car:</label>
+                    <select name="car_id" id="car_id" class="form-control" required>
+                        @foreach ($cars as $car)
+                            <option value="{{ $car->id }}">{{ $car->make }} {{ $car->model }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="scheduled_date">Scheduled Date:</label>
+                    <input type="date" name="scheduled_date" id="scheduled_date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea name="description" id="description" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select name="status" id="status" class="form-control" required>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Schedule Maintenance</button>
+            </form>
+        </div>
+    </div>
+@endsection
