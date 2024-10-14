@@ -15,11 +15,13 @@ class AdminMaintenanceController extends Controller
     {
         Car::whereHas('maintenances', function ($query) {
             $query->where('scheduled_date', today());
-        })->update(['status' => 'under_maintenance']);
+        })->update(['status' => 'under maintenance']);
 
         Car::whereHas('maintenances', function ($query) {
             $query->where('scheduled_date', '<', today());
-        })->update(['status' => 'completed']);
+        })->update(['status' => 'available']);
+
+
 
         $maintenances = Maintenance::with('car')->get();
         $cars = Car::all();
@@ -64,6 +66,9 @@ class AdminMaintenanceController extends Controller
 
         if ($validated['status'] === 'under maintenance') {
             $maintenance->car->update(['status' => 'under maintenance']);
+        }
+        if ($validated['status'] === 'completed') {
+            $maintenance->car->update(['status' => 'available']);
         }
 
         return redirect()->route('admin.maintenances.index')->with('success', 'Maintenance updated successfully.');
