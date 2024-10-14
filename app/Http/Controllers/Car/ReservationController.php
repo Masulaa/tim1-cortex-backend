@@ -152,7 +152,7 @@ class ReservationController extends Controller
         }
 
 
-        $pdf = Pdf::loadView('invoices.cancellation_invoice', [
+        $pdf = Pdf::loadView('admin.reservations.reservation_invoice', [
             'reservation' => $reservation,
             'cancellationFee' => $cancellationFee,
         ]);
