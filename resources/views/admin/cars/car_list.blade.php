@@ -12,6 +12,12 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <!-- Search Bar -->
+    <div class="form-group">
+        <input type="text" id="search" class="form-control mb-3" placeholder="Search for cars..." />
+    </div>
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Cars</h3>
@@ -22,7 +28,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="cars-table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -67,6 +73,7 @@
             </table>
         </div>
     </div>
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Create New Car</h3>
@@ -153,4 +160,27 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script>
+        document.getElementById('search').addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#cars-table tbody tr');
+            rows.forEach(row => {
+                const make = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const model = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                const year = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const transmission = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+                const fuelType = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+
+                if (make.includes(searchValue) || model.includes(searchValue) || year.includes(
+                    searchValue) || transmission.includes(searchValue) || fuelType.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 @endsection
