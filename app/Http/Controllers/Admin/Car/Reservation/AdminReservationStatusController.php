@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Car\Reservation;
 
+use App\Mail\ReservationStartedMail;
 use App\Models\Reservation;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -36,6 +37,8 @@ class AdminReservationStatusController extends Controller
                     break;
                 case 'in use':
                     $car->status = 'reserved';
+                    $user = $reservation->user;
+                    Mail::to($user->email)->send(new ReservationStartedMail($reservation, $user));
                     break;
                 case 'returned':
                     $car->status = 'available';
