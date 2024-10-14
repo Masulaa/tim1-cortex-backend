@@ -139,17 +139,16 @@ class ReservationController extends Controller
         $currentTime = now();
         $startDate = $reservation->start_date;
 
+        $hoursUntilStart = $currentTime->diffInHours($startDate);
 
-        $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
-            ? $reservation->total_price * 0.50
-            : 0;
-
-
-        if ($cancellationFee > 0) {
+        if ($hoursUntilStart < 48) {
+            $cancellationFee = $reservation->total_price * 0.50;
             $newTotalPrice = $reservation->total_price - $cancellationFee;
             $reservation->total_price = $newTotalPrice;
-            $reservation->save();
+        } else {
+            $reservation->total_price = 0;
         }
+
 
         $pdf = Pdf::loadView('admin.reservations.reservation_invoice', [
             'reservation' => $reservation,
