@@ -139,6 +139,7 @@ class ReservationController extends Controller
         $currentTime = now();
         $startDate = $reservation->start_date;
 
+
         $cancellationFee = ($currentTime->diffInHours($startDate) < 48)
             ? $reservation->total_price * 0.50
             : 0;
@@ -146,31 +147,27 @@ class ReservationController extends Controller
 
         if ($cancellationFee > 0) {
             $newTotalPrice = $reservation->total_price - $cancellationFee;
-
             $reservation->total_price = $newTotalPrice;
             $reservation->save();
         }
 
-
         $pdf = Pdf::loadView('admin.reservations.reservation_invoice', [
             'reservation' => $reservation,
-            'cancellationFee' => $cancellationFee,
         ]);
 
-
-        $pdf = Pdf::loadView('admin.reservations.reservation_invoice', compact('reservation'));
         $pdfContent = $pdf->download()->getOriginalContent();
 
 
-        if ($cancellationFee > 0) {
-            Mail::to($reservation->user->email)->send(new CancellationInvoiceMail($reservation, $cancellationFee, $pdfContent));
-        }
+
+        Mail::to($reservation->user->email)
+            ->send(new CancellationInvoiceMail($reservation, $pdfContent));
+
+
         $reservation->delete();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Reservation cancelled successfully',
-            'cancellation_fee' => $cancellationFee
         ], 200);
     }
 

@@ -11,19 +11,19 @@ class CancellationInvoiceMail extends Mailable
     use Queueable, SerializesModels;
 
     public $reservation;
-    public $cancellationFee;
-    public $pdfFilePath;
+    public $pdfContent;
 
     /**
      * Create a new message instance.
      *
+     * @param  \App\Models\Reservation  $reservation
+     * @param  string  $pdfContent
      * @return void
      */
-    public function __construct($reservation, $cancellationFee, $pdfFilePath)
+    public function __construct($reservation, $pdfContent)
     {
         $this->reservation = $reservation;
-        $this->cancellationFee = $cancellationFee;
-        $this->pdfFilePath = $pdfFilePath;
+        $this->pdfContent = $pdfContent;
     }
 
     /**
@@ -34,7 +34,12 @@ class CancellationInvoiceMail extends Mailable
     public function build()
     {
         return $this->subject('Cancellation Invoice for Reservation ID: ' . $this->reservation->id)
-            ->view('emails.cancellation_invoice')
-            ->attach($this->pdfFilePath);
+            ->view('emails.reservation_completed')
+            ->with([
+                'reservationDetails' => $this->reservation,
+            ])
+            ->attachData($this->pdfContent, 'invoice-' . $this->reservation->id . '.pdf', [
+                'mime' => 'application/pdf',
+            ]);
     }
 }
