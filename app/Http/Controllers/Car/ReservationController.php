@@ -158,12 +158,12 @@ class ReservationController extends Controller
         ]);
 
 
-        $pdfFilePath = storage_path('app/public/invoices/cancellation_invoice_' . $reservation->id . '.pdf');
-        $pdf->save($pdfFilePath);
+        $pdf = Pdf::loadView('admin.reservations.reservation_invoice', compact('reservation'));
+        $pdfContent = $pdf->download()->getOriginalContent();
 
 
         if ($cancellationFee > 0) {
-            \Mail::to($reservation->user->email)->send(new CancellationInvoiceMail($reservation, $cancellationFee, $pdfFilePath));
+            Mail::to($reservation->user->email)->send(new CancellationInvoiceMail($reservation, $cancellationFee, $pdfContent));
         }
         $reservation->delete();
 
