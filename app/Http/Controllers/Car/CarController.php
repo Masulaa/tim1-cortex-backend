@@ -19,9 +19,19 @@ class CarController extends Controller
      */
     public function index()
     {
+
+        
         Reservation::where('status', 'reserved')
             ->where('start_date', '<=', now())
             ->update(['status' => 'in use']);
+            
+            Car::whereHas('maintenances', function ($query) {
+                $query->where('scheduled_date', today()); 
+            })->update(['status' => 'under_maintenance']);
+        
+            Car::whereHas('maintenances', function ($query) {
+                $query->where('scheduled_date', '<', today()); 
+            })->update(['status' => 'completed']);
 
 
         $cars = Car::all();

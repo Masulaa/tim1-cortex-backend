@@ -66,11 +66,11 @@
             form.addEventListener('submit', function(event) {
 
                 let startDate = new Date(startDateInput.value);
-                startDate.setHours(11, 0, 0); // Postavi 11:00
+                startDate.setHours(11, 0, 0); 
                 startDateInput.value = startDate.toISOString().slice(0, 10);
 
                 let endDate = new Date(endDateInput.value);
-                endDate.setHours(9, 0, 0); // Postavi 09:00
+                endDate.setHours(9, 0, 0);
                 endDateInput.value = endDate.toISOString().slice(0, 10);
             });
         });

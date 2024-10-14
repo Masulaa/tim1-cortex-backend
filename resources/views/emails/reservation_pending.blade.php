@@ -68,7 +68,7 @@
 
             <p>We will notify you once your reservation is confirmed.</p>
 
-            <a href="{{ url('http://localhost:3000/home') }}"
+            <a href="{{ url('http://front.tim1.cortexakademija.com/home') }}"
                 style="background-color: #4F46E5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px;">Visit
                 Our Website</a>
         </div>
