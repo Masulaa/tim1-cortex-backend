@@ -28,9 +28,9 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row d-flex align-items-stretch">
         <div class="col-md-3">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header">
                     <h3 class="card-title">Pending</h3>
                 </div>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header">
                     <h3 class="card-title">Reserved</h3>
                 </div>
@@ -82,7 +82,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header">
                     <h3 class="card-title">In Use</h3>
                 </div>
@@ -108,7 +108,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header">
                     <h3 class="card-title">Returned</h3>
                 </div>
