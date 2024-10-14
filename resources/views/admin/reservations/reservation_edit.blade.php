@@ -36,13 +36,12 @@
         <div class="form-group">
             <label for="start_date">Start Date</label>
             <input type="date" class="form-control" id="start_date" name="start_date"
-                value="{{ $reservation->start_date->format('Y-m-d') }}">
+                value="{{ $reservation->start_date }}">
         </div>
 
         <div class="form-group">
             <label for="end_date">End Date</label>
-            <input type="date" class="form-control" id="end_date" name="end_date"
-                value="{{ $reservation->end_date->format('Y-m-d') }}">
+            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ $reservation->end_date }}">
         </div>
 
         <div class="form-group">
@@ -65,14 +64,14 @@
             const endDateInput = document.getElementById('end_date');
 
             form.addEventListener('submit', function(event) {
-                // Pre nego što se pošalje forma, dodajemo fiksno vreme u 11h za start date i 9h za end date
+
                 let startDate = new Date(startDateInput.value);
                 startDate.setHours(11, 0, 0); // Postavi 11:00
-                startDateInput.value = startDate.toISOString().slice(0, 10); // Datum bez vremena
+                startDateInput.value = startDate.toISOString().slice(0, 10);
 
                 let endDate = new Date(endDateInput.value);
                 endDate.setHours(9, 0, 0); // Postavi 09:00
-                endDateInput.value = endDate.toISOString().slice(0, 10); // Datum bez vremena
+                endDateInput.value = endDate.toISOString().slice(0, 10);
             });
         });
     </script>
