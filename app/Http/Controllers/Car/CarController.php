@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Car;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ReservationRejectedMail;
 use App\Models\Car;
 use App\Http\Requests\Car\Car\{
     CheckAvailabilityRequest,
@@ -11,6 +12,7 @@ use App\Http\Requests\Car\Car\{
 };
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CarController extends Controller
 {
@@ -20,12 +22,17 @@ class CarController extends Controller
     public function index()
     {
 
-
-
-        Reservation::where('status', 'pending')
+        $expiredReservations = Reservation::where('status', 'pending')
             ->where('start_date', '<', now())
-            ->delete();
+            ->get();
 
+        foreach ($expiredReservations as $reservation) {
+            $user = $reservation->user;
+
+            Mail::to($user->email)->send(new ReservationRejectedMail($user, $reservation));
+
+            $reservation->delete();
+        }
         Reservation::where('status', 'reserved')
             ->where('start_date', '<=', now())
             ->update(['status' => 'in use']);

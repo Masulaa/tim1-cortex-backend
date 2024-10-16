@@ -20,9 +20,17 @@ class AdminReservationController extends Controller
     public function index(Request $request)
     {
 
-        Reservation::where('status', 'pending')
+        $expiredReservations = Reservation::where('status', 'pending')
             ->where('start_date', '<', now())
-            ->delete();
+            ->get();
+
+        foreach ($expiredReservations as $reservation) {
+            $user = $reservation->user;
+
+            Mail::to($user->email)->send(new ReservationRejectedMail($user, $reservation));
+
+            $reservation->delete();
+        }
 
 
         Reservation::where('status', 'reserved')
