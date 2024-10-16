@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Car\Reservation;
 
 use App\Http\Requests\Admin\Car\Reservation\AdminReservationUpdateRequest;
+use App\Mail\ReservationRejectedMail;
 use App\Models\Car;
 use App\Models\Reservation;
 use App\Models\User;
@@ -18,6 +19,10 @@ class AdminReservationController extends Controller
 {
     public function index(Request $request)
     {
+
+        Reservation::where('status', 'pending')
+            ->where('start_date', '<', now())
+            ->delete();
 
 
         Reservation::where('status', 'reserved')
@@ -87,6 +92,9 @@ class AdminReservationController extends Controller
     {
         $reservation = Reservation::findOrFail($id);
         $reservation->delete();
+        $user = $reservation->user;
+
+        Mail::to($user->email)->send(new ReservationRejectedMail($user, $reservation));
         return redirect()->route('admin.reservations.index')->with('success', 'Reservation cancelled successfully');
     }
 
